@@ -1,0 +1,2741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout | NOVA</title>
+<meta name="description" content="Complete your NOVA order — enter shipping details and choose a payment method.">
+<meta property="og:title" content="Checkout | NOVA">
+<meta property="og:description" content="Complete your NOVA order — enter shipping details and choose a payment method.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NOVA">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  
+  --black:#0A0A0F;
+  --near-black:#121218;
+  --surface-dark:#17171F;
+  --surface-dark-2:#1D1D27;
+  --white:#FFFFFF;
+  --surface-light:#F6F6F9;
+  --surface-light-2:#EFEFF4;
+  --line-dark:rgba(255,255,255,0.10);
+  --line-light:rgba(10,10,15,0.10);
+  --ink:#0A0A0F;
+  --ink-soft:#4B4B57;
+  --muted-dark:#9797A6;
+  --muted-light:#6B6B78;
+
+  --accent-blue:#5B6BFF;
+  --accent-purple:#A855F7;
+  --gradient: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  --gradient-soft: linear-gradient(135deg, rgba(91,107,255,0.16), rgba(168,85,247,0.16));
+
+  --radius-sm:10px;
+  --radius:16px;
+  --radius-lg:24px;
+  --pill:999px;
+
+  --shadow-lg:0 30px 60px -20px rgba(0,0,0,0.45);
+  --shadow-sm:0 8px 24px -10px rgba(0,0,0,0.25);
+
+  --container:1240px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--black);
+  color:var(--white);
+  font-family:'Inter',-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  line-height:1.5;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+button, input, select, textarea{font-family:inherit;}
+::selection{background:var(--accent-purple);color:#fff;}
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
+  outline:2px solid var(--accent-blue);outline-offset:2px;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important;transition-duration:0.001ms !important;scroll-behavior:auto !important;}
+}
+
+h1,h2,h3,h4{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:600;
+  letter-spacing:-0.01em;
+}
+
+.wrap{max-width:var(--container);margin:0 auto;padding:0 clamp(20px,4vw,32px);}
+.section{padding:clamp(56px,9vw,110px) 0;}
+.section-light{background:var(--surface-light);color:var(--ink);}
+.section-dark{background:var(--black);color:var(--white);}
+.section-surface{background:var(--surface-dark);color:var(--white);}
+
+.eyebrow{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:12.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+  background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:10px;display:inline-block;
+}
+.section-head{text-align:center;max-width:640px;margin:0 auto clamp(32px,5vw,52px);}
+.section-head h2{font-size:clamp(28px,4vw,42px);margin-bottom:12px;}
+.section-head p{color:var(--muted-dark);font-size:15.5px;}
+.section-light .section-head p{color:var(--muted-light);}
+.section-head.left{text-align:left;margin-left:0;}
+
+[data-reveal]{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease, transform 0.7s ease;}
+[data-reveal].revealed{opacity:1;transform:translateY(0);}
+[data-reveal="fade"]{transform:none;}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 28px;border-radius:var(--pill);font-size:14.5px;font-weight:600;
+  border:1px solid transparent;cursor:pointer;transition:transform 0.2s, box-shadow 0.2s, background 0.2s, border-color 0.2s, opacity 0.2s;
+  min-height:46px;white-space:nowrap;
+}
+.btn:active{transform:scale(0.97);}
+.btn-gradient{background:var(--gradient);color:#fff;}
+.btn-gradient:hover{box-shadow:0 14px 30px -8px rgba(124,77,255,0.55);}
+.btn-outline-dark{border-color:rgba(255,255,255,0.28);color:#fff;background:transparent;}
+.btn-outline-dark:hover{border-color:#fff;background:rgba(255,255,255,0.06);}
+.btn-outline-light{border-color:var(--line-light);color:var(--ink);background:transparent;}
+.btn-outline-light:hover{border-color:var(--ink);}
+.btn-dark{background:var(--ink);color:#fff;}
+.btn-dark:hover{opacity:0.85;}
+.btn-block{width:100%;}
+.btn-sm{padding:9px 18px;font-size:13px;min-height:36px;}
+.btn:disabled{opacity:0.45;cursor:not-allowed;}
+
+#nova-header{
+  position:sticky;top:0;z-index:295;
+  background:rgba(10,10,15,0.72);
+  backdrop-filter:blur(16px) saturate(1.4);
+  border-bottom:1px solid transparent;
+  transition:border-color 0.3s, background 0.3s;
+}
+#nova-header.scrolled{border-color:var(--line-dark);background:rgba(10,10,15,0.92);}
+.nav{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  height:72px;max-width:var(--container);margin:0 auto;padding:0 clamp(20px,4vw,32px);
+}
+.nav-logo{
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.01em;
+  display:flex;align-items:center;gap:8px;flex-shrink:0;
+}
+.nav-logo .dot{width:9px;height:9px;border-radius:50%;background:var(--gradient);flex-shrink:0;}
+.nav-links{display:flex;gap:30px;}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--muted-dark);transition:color 0.2s;}
+.nav-links a:hover, .nav-links a.active{color:#fff;}
+.nav-search{
+  display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);
+  border:1px solid var(--line-dark);border-radius:var(--pill);padding:8px 16px;
+  flex:1;max-width:280px;
+}
+.nav-search input{
+  background:none;border:none;color:#fff;font-size:13px;width:100%;
+}
+.nav-search input::placeholder{color:var(--muted-dark);}
+.nav-search button{background:none;border:none;color:var(--muted-dark);cursor:pointer;font-size:14px;}
+.nav-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.icon-btn{
+  position:relative;width:40px;height:40px;border-radius:50%;background:none;border:none;
+  color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s;
+}
+.icon-btn:hover{background:rgba(255,255,255,0.08);}
+
+#mobile-tabbar{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:280;
+  background:rgba(10,10,15,0.95);backdrop-filter:blur(16px);
+  border-top:1px solid var(--line-dark);padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+}
+body.nova-compare-open{padding-bottom:84px;}
+@media(max-width:680px){
+  #mobile-tabbar{display:flex;justify-content:space-around;align-items:center;}
+  body{padding-bottom:64px;}
+  body.nova-compare-open{padding-bottom:148px;}
+}
+.tab-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  color:var(--muted-dark);font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.02em;
+  position:relative;padding:4px 10px;flex:1;
+}
+.tab-item .tab-icon{font-size:19px;}
+.tab-item.active{color:#fff;}
+.tab-item.active .tab-icon{
+  background:var(--gradient);-webkit-background-clip:text;background-clip:text;
+}
+.tab-badge{
+  position:absolute;top:0;right:14px;min-width:15px;height:15px;border-radius:50%;
+  background:var(--gradient);color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;padding:0 3px;
+}
+.search-autocomplete{
+  position:absolute;top:calc(100% + 8px);left:0;right:0;
+  background:var(--near-black);border:1px solid var(--line-dark);border-radius:var(--radius-sm);
+  box-shadow:var(--shadow-lg);display:none;overflow:hidden;z-index:250;max-height:400px;overflow-y:auto;
+}
+.search-autocomplete.open{display:block;}
+.sa-item{
+  display:flex;gap:10px;align-items:center;padding:10px 14px;color:#fff;
+  border-bottom:1px solid var(--line-dark);transition:background 0.15s;
+}
+.sa-item:hover{background:rgba(255,255,255,0.05);}
+.sa-thumb{
+  width:36px;height:36px;border-radius:8px;overflow:hidden;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--surface-dark);
+}
+.sa-thumb img{width:100%;height:100%;object-fit:cover;}
+.sa-name{font-size:12.5px;font-weight:600;}
+.sa-price{font-size:11.5px;color:var(--muted-dark);}
+.sa-viewall{display:block;padding:11px 14px;font-size:12.5px;color:var(--accent-blue);font-weight:600;}
+.sa-viewall:hover{background:rgba(255,255,255,0.05);}
+.sa-empty{padding:14px;font-size:12.5px;color:var(--muted-dark);}
+@media(max-width:680px){
+  .mobile-search{position:relative;}
+}
+.badge-count{
+  position:absolute;top:2px;right:2px;min-width:16px;height:16px;border-radius:50%;
+  background:var(--gradient);color:#fff;font-size:10px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;padding:0 3px;
+}
+.burger{display:none;}
+@media(max-width:980px){
+  .nav-links{display:none;}
+  .nav-search{display:none;}
+  .burger{
+    display:flex;width:40px;height:40px;background:none;border:none;color:#fff;
+    font-size:20px;cursor:pointer;align-items:center;justify-content:center;
+  }
+}
+
+#nova-mobile-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:290;
+  opacity:0;pointer-events:none;transition:opacity 0.3s;
+}
+#nova-mobile-overlay.open{opacity:1;pointer-events:auto;}
+#nova-mobile-menu{
+  position:fixed;top:0;right:0;bottom:0;width:min(320px,84vw);z-index:291;
+  background:var(--near-black);border-left:1px solid var(--line-dark);
+  transform:translateX(100%);transition:transform 0.35s ease;
+  display:flex;flex-direction:column;padding:20px;
+}
+#nova-mobile-menu.open{transform:translateX(0);}
+.mobile-menu-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.mobile-menu-close{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;width:40px;height:40px;}
+.mobile-search{
+  display:flex;gap:8px;background:rgba(255,255,255,0.06);border:1px solid var(--line-dark);
+  border-radius:var(--pill);padding:10px 16px;margin-bottom:22px;
+}
+.mobile-search input{background:none;border:none;color:#fff;width:100%;font-size:14px;}
+.mobile-search button{background:none;border:none;color:var(--muted-dark);font-size:15px;}
+#nova-mobile-menu nav.mobile-links{display:flex;flex-direction:column;}
+#nova-mobile-menu .mobile-links a{
+  padding:16px 4px;border-bottom:1px solid var(--line-dark);font-size:16px;font-weight:500;
+}
+
+.hero{
+  position:relative;padding:clamp(70px,12vw,130px) 0 clamp(50px,8vw,90px);
+  overflow:hidden;text-align:center;
+}
+.hero::before{
+  content:'';position:absolute;top:-20%;left:50%;transform:translateX(-50%);
+  width:900px;height:900px;max-width:180vw;
+  background:radial-gradient(circle, rgba(91,107,255,0.28), rgba(168,85,247,0.12) 45%, transparent 70%);
+  filter:blur(10px);pointer-events:none;
+}
+.hero-content{position:relative;z-index:1;}
+.hero h1{
+  font-size:clamp(38px,7.5vw,80px);line-height:1.02;font-weight:700;
+  letter-spacing:-0.02em;margin-bottom:18px;
+}
+.hero h1 .grad{background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero .sub{
+  color:var(--muted-dark);font-size:clamp(15px,2vw,18px);max-width:560px;margin:0 auto 32px;
+}
+.hero .btn-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:56px;}
+
+.hero-visual{
+  position:relative;max-width:720px;margin:0 auto;border-radius:var(--radius-lg);
+  background:rgba(255,255,255,0.04);border:1px solid var(--line-dark);
+  backdrop-filter:blur(20px);padding:clamp(28px,5vw,50px);
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+@media(max-width:640px){.hero-visual{grid-template-columns:1fr 1fr;}}
+.hero-chip{
+  aspect-ratio:1;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;
+  font-size:clamp(22px,4vw,32px);border:1px solid var(--line-dark);overflow:hidden;position:relative;
+}
+.hero-chip img{width:100%;height:100%;object-fit:cover;}
+
+.p-art{
+  border-radius:var(--radius);display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.p-art .icon{font-size:2.6rem;filter:drop-shadow(0 6px 16px rgba(0,0,0,0.35));}
+.p-art::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.18), transparent 55%);
+}
+
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media(max-width:900px){.cat-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.cat-grid{gap:12px;}}
+.cat-card{
+  position:relative;border-radius:var(--radius);overflow:hidden;
+  aspect-ratio:4/3;display:block;transition:transform 0.3s;
+  border:1px solid var(--line-dark);
+}
+.cat-card:hover{transform:translateY(-4px);}
+.cat-card img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform 0.5s ease;
+}
+.cat-card:hover img{transform:scale(1.06);}
+.cat-card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(10,10,15,0.15) 30%, rgba(10,10,15,0.88) 100%);
+}
+.cat-card .cat-icon{
+  position:absolute;top:14px;left:14px;font-size:20px;z-index:2;
+  width:34px;height:34px;border-radius:50%;background:rgba(10,10,15,0.55);
+  border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;
+}
+.cat-card .cat-name{
+  position:absolute;bottom:14px;left:16px;right:16px;z-index:2;
+  font-size:14px;font-weight:700;color:#fff;letter-spacing:0.01em;
+}
+.section-light .cat-card{border-color:var(--line-light);}
+
+.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+@media(max-width:1080px){.product-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:760px){.product-grid{grid-template-columns:repeat(2,1fr);gap:14px;}}
+@media(max-width:420px){.product-grid{grid-template-columns:1fr 1fr;gap:10px;}}
+
+.product-card{
+  background:var(--surface-dark);border:1px solid var(--line-dark);border-radius:var(--radius);
+  overflow:hidden;display:flex;flex-direction:column;transition:transform 0.3s, border-color 0.3s;
+  position:relative;
+}
+.product-card:hover{transform:translateY(-6px);border-color:rgba(168,85,247,0.45);}
+.section-light .product-card{background:#fff;border-color:var(--line-light);}
+.pc-media{
+  aspect-ratio:1/0.9;position:relative;overflow:hidden;
+}
+.pc-media .p-art{position:absolute;inset:8px;transition:transform 0.4s ease;}
+.product-card:hover .pc-media .p-art{transform:scale(1.05);}
+.pc-badge{
+  position:absolute;top:10px;left:10px;font-size:10.5px;font-weight:700;letter-spacing:0.03em;
+  padding:5px 10px;border-radius:var(--pill);background:var(--gradient);color:#fff;z-index:2;
+}
+.pc-discount{
+  position:absolute;top:10px;right:10px;font-size:10.5px;font-weight:700;
+  padding:5px 9px;border-radius:var(--pill);background:rgba(0,0,0,0.55);color:#fff;z-index:2;
+  border:1px solid rgba(255,255,255,0.2);
+}
+.pc-wishlist{
+  position:absolute;bottom:10px;right:10px;width:34px;height:34px;border-radius:50%;
+  background:rgba(10,10,15,0.55);border:1px solid rgba(255,255,255,0.2);color:#fff;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;z-index:2;
+  transition:background 0.2s, transform 0.2s;
+}
+.pc-wishlist:hover{transform:scale(1.08);}
+.pc-wishlist.active{background:var(--gradient);border-color:transparent;}
+.pc-compare{
+  position:absolute;bottom:10px;right:52px;width:34px;height:34px;border-radius:50%;
+  background:rgba(10,10,15,0.55);border:1px solid rgba(255,255,255,0.2);color:#fff;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;z-index:2;
+  transition:background 0.2s, transform 0.2s;
+}
+.pc-compare:hover{transform:scale(1.08);}
+.pc-compare.active{background:var(--gradient);border-color:transparent;}
+
+#compare-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:340;
+  background:var(--near-black);border-top:1px solid var(--line-dark);
+  box-shadow:0 -20px 40px -20px rgba(0,0,0,0.5);
+  transform:translateY(100%);transition:transform 0.3s ease;
+  padding:14px clamp(20px,4vw,32px);
+}
+#compare-bar.show{transform:translateY(0);}
+@media(max-width:680px){
+  #compare-bar{bottom:72px;}
+}
+.compare-bar-inner{
+  max-width:var(--container);margin:0 auto;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+}
+.compare-bar-items{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.compare-chip{
+  display:flex;align-items:center;gap:8px;background:var(--surface-dark);border:1px solid var(--line-dark);
+  border-radius:var(--pill);padding:6px 10px 6px 6px;font-size:12px;
+}
+.compare-chip .thumb{width:26px;height:26px;border-radius:50%;object-fit:cover;background-size:cover;background-position:center;}
+.compare-chip button{background:none;border:none;color:var(--muted-dark);cursor:pointer;font-size:13px;}
+.compare-bar-actions{display:flex;gap:10px;align-items:center;}
+.compare-bar-hint{font-size:12px;color:var(--muted-dark);}
+
+#compare-modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:400;
+  display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;
+}
+#compare-modal-overlay.show{display:flex;}
+#compare-modal{
+  background:var(--near-black);border:1px solid var(--line-dark);border-radius:var(--radius-lg);
+  max-width:1000px;width:100%;padding:clamp(20px,4vw,36px);
+}
+.compare-modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.compare-modal-head h3{font-size:20px;}
+.compare-close{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;width:38px;height:38px;}
+.compare-table-wrap{overflow-x:auto;}
+.compare-grid-table{width:100%;border-collapse:collapse;min-width:560px;}
+.compare-grid-table th, .compare-grid-table td{padding:12px 14px;border-bottom:1px solid var(--line-dark);text-align:left;font-size:13px;vertical-align:top;}
+.compare-grid-table th{color:var(--muted-dark);font-weight:500;width:140px;}
+.compare-col-head{text-align:center;}
+.compare-col-head .p-art{width:64px;height:64px;margin:0 auto 10px;border-radius:12px;}
+.compare-col-head img{width:64px;height:64px;object-fit:cover;border-radius:12px;margin:0 auto 10px;display:block;}
+.compare-col-head .name{font-weight:600;font-size:13.5px;margin-bottom:4px;}
+.compare-col-head .price{color:var(--brass,var(--accent-blue));font-weight:700;margin-bottom:10px;}
+.compare-col-head .remove-col{font-size:11px;color:var(--muted-dark);background:none;border:none;cursor:pointer;text-decoration:underline;}
+.pc-body{padding:16px 16px 18px;display:flex;flex-direction:column;gap:6px;flex:1;}
+.pc-cat{font-size:10.5px;color:var(--muted-dark);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;}
+.section-light .pc-cat{color:var(--muted-light);}
+.pc-name{font-size:14.5px;font-weight:600;line-height:1.35;min-height:2.6em;}
+.pc-name a:hover{color:var(--accent-blue);}
+.pc-rating{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted-dark);}
+.section-light .pc-rating{color:var(--muted-light);}
+.pc-rating .stars{color:#F5B942;letter-spacing:1px;}
+.pc-price-row{display:flex;align-items:baseline;gap:8px;margin-top:2px;flex-wrap:wrap;}
+.pc-price{font-size:17px;font-weight:700;}
+.pc-price-orig{font-size:12.5px;color:var(--muted-dark);text-decoration:line-through;}
+.pc-foot{margin-top:10px;}
+.pc-add{
+  width:100%;padding:10px;border-radius:var(--pill);border:1px solid var(--line-dark);
+  background:transparent;color:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+  transition:all 0.25s;
+}
+.section-light .pc-add{border-color:var(--line-light);}
+.pc-add:hover{background:var(--gradient);border-color:transparent;color:#fff;}
+
+.scroll-row{
+  display:flex;gap:20px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+}
+.scroll-row::-webkit-scrollbar{height:6px;}
+.scroll-row::-webkit-scrollbar-thumb{background:var(--line-dark);border-radius:99px;}
+.scroll-row .product-card{min-width:230px;scroll-snap-align:start;flex-shrink:0;}
+@media(max-width:480px){.scroll-row .product-card{min-width:180px;}}
+
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+@media(max-width:900px){.trust-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.trust-grid{grid-template-columns:1fr;}}
+.trust-card{padding:26px 20px;border-radius:var(--radius);background:#fff;border:1px solid var(--line-light);}
+.trust-card .icon{font-size:26px;margin-bottom:12px;}
+.trust-card h4{font-size:15.5px;margin-bottom:6px;}
+.trust-card p{font-size:13.5px;color:var(--muted-light);line-height:1.6;}
+
+.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:840px){.review-grid{grid-template-columns:1fr;}}
+.review-card{
+  background:var(--surface-dark);border:1px solid var(--line-dark);border-radius:var(--radius);
+  padding:26px;display:flex;flex-direction:column;gap:12px;
+}
+.review-card .stars{color:#F5B942;font-size:13px;letter-spacing:2px;}
+.review-card p.quote{font-size:14.5px;line-height:1.7;color:#E4E4EA;}
+.review-who{display:flex;align-items:center;gap:10px;margin-top:auto;}
+.review-avatar{
+  width:34px;height:34px;border-radius:50%;background:var(--gradient);
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;
+}
+.review-name{font-size:13px;font-weight:600;}
+.review-meta{font-size:11.5px;color:var(--muted-dark);}
+
+.newsletter{
+  background:var(--gradient);border-radius:var(--radius-lg);padding:clamp(36px,6vw,60px);
+  display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;color:#fff;
+}
+.newsletter h3{font-size:clamp(22px,3vw,28px);max-width:420px;}
+.newsletter p{opacity:0.9;font-size:13.5px;margin-top:6px;}
+.newsletter form{display:flex;gap:0;flex:1;min-width:280px;max-width:420px;}
+.newsletter input{
+  flex:1;padding:14px 18px;border:1px solid rgba(255,255,255,0.4);border-right:none;
+  border-radius:var(--pill) 0 0 var(--pill);background:rgba(255,255,255,0.12);color:#fff;font-size:13.5px;
+}
+.newsletter input::placeholder{color:rgba(255,255,255,0.75);}
+.newsletter button{border-radius:0 var(--pill) var(--pill) 0;background:#fff;color:var(--ink);}
+@media(max-width:520px){.newsletter{flex-direction:column;align-items:stretch;text-align:center;}.newsletter form{max-width:none;}}
+
+footer{background:var(--near-black);border-top:1px solid var(--line-dark);padding:56px 0 26px;}
+.foot-grid{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:30px;margin-bottom:40px;}
+@media(max-width:900px){.foot-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:600px){.foot-grid{grid-template-columns:repeat(2,1fr);}}
+.foot-grid h5{font-size:12px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted-dark);margin-bottom:16px;}
+.foot-grid ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.foot-grid ul li a{font-size:13px;color:#DADAE2;}
+.foot-grid ul li a:hover{color:#fff;}
+.foot-bottom{
+  border-top:1px solid var(--line-dark);padding-top:22px;font-size:11.5px;color:var(--muted-dark);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+}
+
+.crumb{font-size:12.5px;color:var(--muted-dark);padding:20px 0 0;display:flex;gap:6px;flex-wrap:wrap;}
+.crumb a:hover{color:#fff;}
+.section-light .crumb{color:var(--muted-light);}
+.section-light .crumb a:hover{color:var(--ink);}
+
+.shop-layout{display:grid;grid-template-columns:240px 1fr;gap:32px;align-items:start;}
+@media(max-width:900px){.shop-layout{grid-template-columns:1fr;}}
+.filters{
+  background:var(--surface-dark);border:1px solid var(--line-dark);border-radius:var(--radius);
+  padding:22px;position:sticky;top:90px;
+}
+@media(max-width:900px){.filters{position:static;}}
+.filter-group{margin-bottom:22px;}
+.filter-group:last-child{margin-bottom:0;}
+.filter-title{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;color:var(--muted-dark);}
+.filter-option{display:flex;align-items:center;gap:9px;font-size:13.5px;padding:6px 0;cursor:pointer;}
+.filter-option input{accent-color:var(--accent-purple);width:15px;height:15px;flex-shrink:0;}
+.price-inputs{display:flex;gap:8px;align-items:center;}
+.price-inputs input{
+  width:100%;background:rgba(255,255,255,0.06);border:1px solid var(--line-dark);border-radius:8px;
+  padding:9px 10px;color:#fff;font-size:13px;
+}
+.clear-filters{font-size:12.5px;color:var(--accent-blue);cursor:pointer;background:none;border:none;margin-top:6px;}
+
+.toolbar{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  margin-bottom:22px;
+}
+.toolbar .result-count{font-size:13.5px;color:var(--muted-dark);}
+.toolbar select{
+  background:var(--surface-dark);border:1px solid var(--line-dark);color:#fff;
+  padding:10px 14px;border-radius:var(--pill);font-size:13px;cursor:pointer;
+}
+.mobile-filter-toggle{display:none;}
+@media(max-width:900px){
+  .mobile-filter-toggle{
+    display:inline-flex;padding:10px 16px;border-radius:var(--pill);border:1px solid var(--line-dark);
+    background:transparent;color:#fff;font-size:13px;cursor:pointer;align-items:center;gap:6px;
+  }
+  .filters{display:none;}
+  .filters.open{display:block;margin-bottom:20px;}
+}
+.empty-state{
+  text-align:center;padding:70px 20px;color:var(--muted-dark);
+  grid-column:1 / -1;
+}
+.empty-state .icon{font-size:40px;margin-bottom:14px;}
+
+.pd-layout{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start;}
+@media(max-width:860px){.pd-layout{grid-template-columns:1fr;gap:30px;}}
+.pd-gallery-main{aspect-ratio:1;border-radius:var(--radius-lg);margin-bottom:14px;}
+.pd-gallery-main .icon{font-size:5rem;}
+.pd-thumbs{display:flex;gap:10px;}
+.pd-thumb{width:64px;height:64px;border-radius:12px;cursor:pointer;border:2px solid transparent;transition:border-color 0.2s;flex-shrink:0;}
+.pd-thumb.active{border-color:var(--accent-purple);}
+.pd-thumb .icon{font-size:1.6rem;}
+.pd-cat{font-size:12px;color:var(--accent-blue);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;margin-bottom:8px;}
+.pd-title{font-size:clamp(24px,3.4vw,34px);margin-bottom:10px;}
+.pd-rating{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--muted-dark);margin-bottom:18px;}
+.pd-rating .stars{color:#F5B942;letter-spacing:2px;}
+.pd-price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;flex-wrap:wrap;}
+.pd-price{font-size:30px;font-weight:700;}
+.pd-price-orig{font-size:16px;color:var(--muted-dark);text-decoration:line-through;}
+.pd-save{font-size:12.5px;font-weight:700;color:#22C55E;background:rgba(34,197,94,0.12);padding:4px 10px;border-radius:var(--pill);}
+.pd-desc{color:var(--muted-dark);font-size:14.5px;line-height:1.75;margin:18px 0;}
+.pd-block{margin-bottom:22px;}
+.pd-block-label{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted-dark);margin-bottom:10px;}
+.color-options{display:flex;gap:10px;flex-wrap:wrap;}
+.color-chip{
+  padding:9px 16px;border-radius:var(--pill);border:1px solid var(--line-dark);font-size:13px;
+  cursor:pointer;transition:all 0.2s;background:transparent;color:#fff;
+}
+.color-chip.active{background:var(--gradient);border-color:transparent;}
+.qty-selector{display:flex;align-items:center;gap:0;border:1px solid var(--line-dark);border-radius:var(--pill);width:fit-content;}
+.qty-selector button{
+  width:40px;height:40px;background:none;border:none;color:#fff;font-size:16px;cursor:pointer;
+}
+.qty-selector .qty-val{width:40px;text-align:center;font-size:14px;font-weight:600;}
+.pd-actions{display:flex;gap:12px;margin:22px 0;flex-wrap:wrap;}
+.pd-actions .btn{flex:1;min-width:150px;}
+.pd-meta-row{display:flex;gap:22px;font-size:12.5px;color:var(--muted-dark);flex-wrap:wrap;border-top:1px solid var(--line-dark);padding-top:18px;}
+.pd-meta-row span{display:flex;align-items:center;gap:6px;}
+
+.spec-table{width:100%;border-collapse:collapse;}
+.spec-table tr{border-bottom:1px solid var(--line-dark);}
+.spec-table td{padding:14px 4px;font-size:13.5px;}
+.spec-table td:first-child{color:var(--muted-dark);width:40%;}
+.spec-table td:last-child{font-weight:500;}
+
+.tabs{display:flex;gap:8px;border-bottom:1px solid var(--line-dark);margin-bottom:24px;flex-wrap:wrap;}
+.tab-btn{
+  padding:12px 4px;background:none;border:none;color:var(--muted-dark);font-size:14px;font-weight:600;
+  cursor:pointer;border-bottom:2px solid transparent;margin-right:20px;
+}
+.tab-btn.active{color:#fff;border-color:var(--accent-purple);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+.review-item{padding:18px 0;border-bottom:1px solid var(--line-dark);}
+.review-item:last-child{border-bottom:none;}
+.review-item .stars{color:#F5B942;font-size:12px;letter-spacing:2px;margin-bottom:6px;}
+.review-item .r-name{font-weight:600;font-size:13.5px;margin-bottom:4px;}
+.review-item .r-text{font-size:13.5px;color:var(--muted-dark);line-height:1.6;}
+
+.write-review-box{
+  margin-top:24px;padding-top:24px;border-top:1px solid var(--line-dark);max-width:420px;
+}
+.star-input{display:flex;gap:6px;font-size:26px;cursor:pointer;color:var(--muted-dark);}
+.star-input span{transition:color 0.15s, transform 0.15s;}
+.star-input span:hover, .star-input span.hovered{transform:scale(1.15);}
+.star-input.selected span.active, .star-input span.active{color:#F5B942;}
+.review-item.user-submitted{background:rgba(91,107,255,0.05);border-radius:8px;padding:14px;border-bottom:none;margin-bottom:10px;}
+.review-item .r-badge{font-size:10px;color:var(--accent-blue);font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-left:8px;}
+
+.deals-hero{
+  text-align:center;padding:60px 0 40px;background:linear-gradient(180deg,rgba(168,85,247,0.14),transparent);
+}
+.countdown{display:flex;gap:14px;justify-content:center;margin-top:28px;flex-wrap:wrap;}
+.countdown .unit{
+  background:var(--surface-dark);border:1px solid var(--line-dark);border-radius:var(--radius);
+  padding:16px 20px;min-width:80px;text-align:center;
+}
+.countdown .num{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,4vw,36px);font-weight:700;
+  background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.countdown .label{font-size:10.5px;color:var(--muted-dark);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px;}
+
+.deal-card{position:relative;}
+.stock-bar-wrap{margin-top:10px;}
+.stock-bar-track{height:6px;border-radius:99px;background:var(--line-dark);overflow:hidden;}
+.stock-bar-fill{height:100%;background:var(--gradient);border-radius:99px;}
+.stock-label{font-size:11px;color:var(--muted-dark);margin-top:5px;}
+
+.cart-layout{display:grid;grid-template-columns:1fr 340px;gap:32px;align-items:start;}
+@media(max-width:900px){.cart-layout{grid-template-columns:1fr;}}
+.cart-line{
+  display:grid;grid-template-columns:80px 1fr auto auto;gap:16px;align-items:center;
+  padding:18px 0;border-bottom:1px solid var(--line-dark);
+}
+@media(max-width:520px){
+  .cart-line{grid-template-columns:60px 1fr;grid-template-areas:"art info" "art qty";row-gap:10px;}
+  .cart-line .cl-price{grid-area:qty;justify-self:start;}
+}
+.cl-art{width:80px;height:80px;border-radius:var(--radius-sm);}
+.cl-art .icon{font-size:1.8rem;}
+.cl-name{font-size:14.5px;font-weight:600;margin-bottom:4px;}
+.cl-meta{font-size:12px;color:var(--muted-dark);}
+.cl-remove{font-size:12px;color:var(--muted-dark);background:none;border:none;cursor:pointer;margin-top:6px;text-decoration:underline;}
+.cl-remove:hover{color:#fff;}
+.cl-qty{display:flex;align-items:center;border:1px solid var(--line-dark);border-radius:var(--pill);}
+.cl-qty button{width:32px;height:32px;background:none;border:none;color:#fff;cursor:pointer;font-size:15px;}
+.cl-qty .val{width:28px;text-align:center;font-size:13px;font-weight:600;}
+.cl-price{font-weight:700;font-size:14.5px;white-space:nowrap;}
+
+.summary-card{
+  background:var(--surface-dark);border:1px solid var(--line-dark);border-radius:var(--radius);padding:26px;
+}
+.summary-row{display:flex;justify-content:space-between;font-size:13.5px;padding:9px 0;color:var(--muted-dark);}
+.summary-row.total{color:#fff;font-weight:700;font-size:16px;border-top:1px solid var(--line-dark);padding-top:16px;margin-top:6px;}
+.cart-empty-state{text-align:center;padding:90px 20px;}
+.cart-empty-state .icon{font-size:52px;margin-bottom:18px;}
+.cart-empty-state h3{font-size:22px;margin-bottom:10px;}
+.cart-empty-state p{color:var(--muted-dark);margin-bottom:26px;}
+
+.checkout-layout{display:grid;grid-template-columns:1fr 360px;gap:36px;align-items:start;}
+@media(max-width:900px){.checkout-layout{grid-template-columns:1fr;}}
+.form-card{background:var(--surface-dark);border:1px solid var(--line-dark);border-radius:var(--radius);padding:28px;margin-bottom:20px;}
+.form-card h3{font-size:16px;margin-bottom:18px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:560px){.form-grid{grid-template-columns:1fr;}}
+.form-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.form-field.full{grid-column:1/-1;}
+.form-field label{font-size:12.5px;color:var(--muted-dark);font-weight:500;}
+.form-field input, .form-field select{
+  background:rgba(255,255,255,0.05);border:1px solid var(--line-dark);border-radius:10px;
+  padding:12px 14px;color:#fff;font-size:14px;transition:border-color 0.2s;
+}
+.form-field input:focus, .form-field select:focus{border-color:var(--accent-blue);outline:none;}
+.form-field input.invalid{border-color:#F87171;}
+.field-error{font-size:11.5px;color:#F87171;display:none;}
+.field-error.show{display:block;}
+.pay-options{display:flex;flex-direction:column;gap:10px;}
+.pay-option{
+  display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--line-dark);
+  border-radius:var(--radius-sm);cursor:pointer;transition:border-color 0.2s, background 0.2s;
+}
+.pay-option:hover{border-color:rgba(168,85,247,0.4);}
+.pay-option.selected{border-color:var(--accent-purple);background:rgba(168,85,247,0.08);}
+.pay-option input{accent-color:var(--accent-purple);width:16px;height:16px;}
+.pay-option .p-icon{font-size:18px;}
+.pay-option .p-label{font-size:13.5px;font-weight:600;}
+
+.checkout-progress{
+  display:flex;align-items:center;justify-content:center;gap:0;
+  max-width:520px;margin:0 auto clamp(30px,5vw,46px);
+}
+.cp-step{display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;flex:1;}
+.cp-dot{
+  width:34px;height:34px;border-radius:50%;background:var(--surface-dark);
+  border:2px solid var(--line-dark);display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:var(--muted-dark);transition:all 0.3s;z-index:1;
+}
+.cp-label{font-size:11.5px;color:var(--muted-dark);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;}
+.cp-line{
+  position:absolute;top:17px;left:calc(-50% + 17px);width:calc(100% - 34px);height:2px;
+  background:var(--line-dark);z-index:0;
+}
+.cp-step:first-child .cp-line{display:none;}
+.cp-step.active .cp-dot{border-color:var(--accent-purple);background:var(--gradient);color:#fff;box-shadow:0 0 0 5px rgba(168,85,247,0.16);}
+.cp-step.active .cp-label{color:#fff;}
+.cp-step.done .cp-dot{background:var(--gradient);border-color:transparent;color:#fff;}
+.cp-step.done .cp-line{background:var(--gradient);}
+
+.checkout-step{display:none;}
+.checkout-step.active{display:block;animation:novaStepIn 0.4s ease;}
+@keyframes novaStepIn{from{opacity:0;transform:translateX(12px);} to{opacity:1;transform:translateX(0);}}
+
+.step-actions{display:flex;gap:12px;margin-top:6px;}
+.step-actions .btn{flex:1;}
+
+.pay-extra{
+  margin-top:14px;padding:16px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.03);
+  border:1px solid var(--line-dark);display:none;
+}
+.pay-extra.show{display:block;animation:novaStepIn 0.3s ease;}
+.pay-extra .form-grid{margin-bottom:0;}
+
+.promo-row{display:flex;gap:10px;margin-top:16px;}
+.promo-row input{flex:1;}
+.promo-applied{
+  display:none;align-items:center;justify-content:space-between;margin-top:12px;
+  background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:var(--radius-sm);
+  padding:10px 14px;font-size:12.5px;color:#4ADE80;font-weight:600;
+}
+.promo-applied.show{display:flex;}
+.promo-applied button{background:none;border:none;color:#4ADE80;cursor:pointer;font-size:13px;text-decoration:underline;}
+
+.review-block{border-bottom:1px solid var(--line-dark);padding:16px 0;}
+.review-block:first-child{padding-top:0;}
+.review-block:last-child{border-bottom:none;}
+.review-block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.review-block-head h4{font-size:13px;text-transform:uppercase;letter-spacing:0.04em;color:var(--muted-dark);}
+.review-edit{font-size:12px;color:var(--accent-blue);background:none;border:none;cursor:pointer;}
+.review-block p{font-size:13.5px;line-height:1.6;}
+
+.qr-sim-box{
+  display:flex;gap:16px;align-items:center;margin-top:16px;padding:16px;
+  border-radius:var(--radius-sm);background:rgba(255,255,255,0.03);border:1px solid var(--line-dark);
+}
+.qr-sim-code{
+  width:84px;height:84px;flex-shrink:0;border-radius:8px;background:#fff;padding:6px;
+  background-image:
+    linear-gradient(#000 40%, transparent 40%), linear-gradient(90deg, #000 40%, transparent 40%);
+  background-size: 14px 14px, 14px 14px;
+  background-position: 0 0, 0 0;
+  position:relative;
+}
+.qr-sim-code::before{
+  content:'';position:absolute;inset:6px;
+  background-image:
+    repeating-linear-gradient(0deg, #0A0A0F 0 4px, transparent 4px 8px),
+    repeating-linear-gradient(90deg, #0A0A0F 0 4px, transparent 4px 8px);
+  background-blend-mode:multiply;
+  opacity:0.9;
+}
+.qr-sim-code::after{
+  content:'';position:absolute;top:6px;left:6px;width:22px;height:22px;
+  border:4px solid #0A0A0F;border-radius:3px;
+}
+.qr-sim-text p{font-size:13px;color:var(--muted-dark);}
+.qr-sim-text strong{color:#fff;}
+
+#f-card-number.card-valid{border-color:#4ADE80;}
+
+.summary-row.discount{color:#4ADE80;}
+
+#success-overlay{
+  position:fixed;inset:0;background:var(--black);z-index:500;
+  display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;
+  overflow:hidden;padding:20px;
+}
+#success-overlay.show{display:flex;}
+.success-check{
+  width:96px;height:96px;border-radius:50%;background:var(--gradient);
+  display:flex;align-items:center;justify-content:center;margin-bottom:26px;
+  animation:novaPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+.success-check svg{width:48px;height:48px;}
+.success-check svg path{
+  stroke:#fff;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:40;stroke-dashoffset:40;animation:novaDraw 0.5s ease 0.3s forwards;
+}
+@keyframes novaPop{0%{transform:scale(0);opacity:0;}100%{transform:scale(1);opacity:1;}}
+@keyframes novaDraw{to{stroke-dashoffset:0;}}
+#success-overlay h2{font-size:clamp(24px,4vw,34px);margin-bottom:10px;position:relative;z-index:2;}
+#success-overlay p{color:var(--muted-dark);font-size:14.5px;margin-bottom:6px;position:relative;z-index:2;}
+#success-overlay .order-num{
+  font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--accent-blue);
+  margin-bottom:28px;position:relative;z-index:2;
+}
+.confetti{
+  position:absolute;top:-20px;width:8px;height:14px;opacity:0.9;
+  animation:novaConfettiFall linear forwards;z-index:1;
+}
+@keyframes novaConfettiFall{
+  to{ transform:translateY(110vh) rotate(540deg); opacity:0.4; }
+}
+
+#auth-section{position:relative;overflow:hidden;}
+#auth-section::before{
+  content:'';position:absolute;top:-25%;left:50%;transform:translateX(-50%);
+  width:700px;height:700px;max-width:170vw;
+  background:radial-gradient(circle, rgba(91,107,255,0.22), rgba(168,85,247,0.10) 45%, transparent 70%);
+  filter:blur(10px);pointer-events:none;z-index:0;
+}
+#auth-section .wrap{position:relative;z-index:1;}
+#auth-redirect-note{
+  background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.3);border-radius:var(--radius-sm);
+  padding:12px 16px;font-size:13px;color:#fff;margin-bottom:22px;display:none;text-align:center;
+}
+#auth-redirect-note.show{display:block;}
+
+.track-search{
+  display:flex;gap:10px;max-width:460px;margin:0 auto 50px;flex-wrap:wrap;
+}
+.track-search input{
+  flex:1;min-width:200px;background:rgba(255,255,255,0.05);border:1px solid var(--line-dark);
+  border-radius:var(--pill);padding:13px 20px;color:#fff;font-size:14px;
+}
+.timeline{max-width:600px;margin:0 auto;}
+.tl-step{display:flex;gap:18px;position:relative;padding-bottom:36px;}
+.tl-step:last-child{padding-bottom:0;}
+.tl-step::before{
+  content:'';position:absolute;left:15px;top:34px;bottom:0;width:2px;background:var(--line-dark);
+}
+.tl-step:last-child::before{display:none;}
+.tl-step.done::before{background:var(--gradient);}
+.tl-dot{
+  width:32px;height:32px;border-radius:50%;border:2px solid var(--line-dark);background:var(--near-black);
+  display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;z-index:1;
+}
+.tl-step.done .tl-dot{background:var(--gradient);border-color:transparent;}
+.tl-step.current .tl-dot{border-color:var(--accent-purple);box-shadow:0 0 0 4px rgba(168,85,247,0.18);}
+.tl-title{font-weight:600;font-size:14.5px;}
+.tl-desc{font-size:12.5px;color:var(--muted-dark);margin-top:3px;}
+.tl-time{font-size:11.5px;color:var(--muted-dark);margin-top:2px;}
+
+.about-hero{text-align:center;padding:80px 0 50px;}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:760px){.values-grid{grid-template-columns:1fr;}}
+.value-card{padding:28px;border-radius:var(--radius);background:var(--surface-dark);border:1px solid var(--line-dark);}
+.value-card .icon{font-size:26px;margin-bottom:12px;}
+
+#nova-toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);
+  background:#fff;color:var(--ink);padding:13px 26px;border-radius:var(--pill);
+  font-size:13px;font-weight:600;opacity:0;pointer-events:none;z-index:400;
+  transition:opacity 0.3s, transform 0.3s;box-shadow:var(--shadow-lg);
+  max-width:calc(100vw - 40px);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+#nova-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+@media(max-width:680px){
+  #nova-toast{bottom:80px;}
+}
+
+body{opacity:0;}
+body.nova-loaded{opacity:1;transition:opacity 0.5s ease;}
+
+#nova-scroll-progress{
+  position:fixed;top:0;left:0;height:3px;background:var(--gradient);z-index:999;
+  width:0%;transition:width 0.1s linear;
+}
+
+.nav-links a{position:relative;padding-bottom:2px;}
+.nav-links a::after{
+  content:'';position:absolute;left:0;bottom:-4px;width:0;height:2px;background:var(--gradient);
+  transition:width 0.25s ease;border-radius:2px;
+}
+.nav-links a:hover::after, .nav-links a.active::after{width:100%;}
+
+.btn{position:relative;overflow:hidden;}
+.btn-gradient:hover{box-shadow:0 16px 34px -10px rgba(124,77,255,0.55), 0 4px 14px -4px rgba(91,107,255,0.4);}
+.btn:active{transform:scale(0.96);}
+.btn .btn-ripple{
+  position:absolute;border-radius:50%;background:rgba(255,255,255,0.35);
+  transform:scale(0);animation:novaRipple 0.6s ease-out;pointer-events:none;
+}
+@keyframes novaRipple{to{transform:scale(3);opacity:0;}}
+
+.product-card, .cat-card{
+  transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(var(--tz,0px));
+  transition:transform 0.15s ease-out, border-color 0.3s;
+  will-change:transform;
+}
+.product-card:hover, .cat-card:hover{transition:transform 0.1s ease-out, border-color 0.3s;}
+
+.product-grid.revealed .product-card,
+.cat-grid.revealed .cat-card,
+.trust-grid.revealed .trust-card,
+.review-grid.revealed .review-card{
+  animation:novaStagger 0.6s ease both;
+}
+.product-grid .product-card:nth-child(1), .cat-grid .cat-card:nth-child(1){animation-delay:0.03s;}
+.product-grid .product-card:nth-child(2), .cat-grid .cat-card:nth-child(2){animation-delay:0.08s;}
+.product-grid .product-card:nth-child(3), .cat-grid .cat-card:nth-child(3){animation-delay:0.13s;}
+.product-grid .product-card:nth-child(4), .cat-grid .cat-card:nth-child(4){animation-delay:0.18s;}
+.product-grid .product-card:nth-child(5), .cat-grid .cat-card:nth-child(5){animation-delay:0.23s;}
+.product-grid .product-card:nth-child(6), .cat-grid .cat-card:nth-child(6){animation-delay:0.28s;}
+.product-grid .product-card:nth-child(7), .cat-grid .cat-card:nth-child(7){animation-delay:0.33s;}
+.product-grid .product-card:nth-child(8), .cat-grid .cat-card:nth-child(8){animation-delay:0.38s;}
+@keyframes novaStagger{from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);}}
+
+@keyframes novaBadgePop{
+  0%{transform:scale(1);} 40%{transform:scale(1.5);} 100%{transform:scale(1);}
+}
+.badge-count.pop{animation:novaBadgePop 0.4s cubic-bezier(0.34,1.56,0.64,1);}
+
+.section-dark::before, .hero::after{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:0.025;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.section-dark{position:relative;}
+.section-dark > .wrap, .section-dark > *{position:relative;z-index:1;}
+
+.hero{position:relative;}
+.hero::before{
+  background:
+    radial-gradient(500px circle at var(--mx,50%) var(--my,20%), rgba(168,85,247,0.12), transparent 60%),
+    radial-gradient(circle, rgba(91,107,255,0.28), rgba(168,85,247,0.12) 45%, transparent 70%);
+}
+
+.count-up{display:inline-block;}
+.text-center{text-align:center;}
+.mt-24{margin-top:24px;}
+.hide-mobile{}
+@media(max-width:640px){.hide-mobile{display:none;}}
+</style>
+<noscript><style>body{opacity:1 !important;}</style></noscript>
+</head>
+<body>
+
+<header id="nova-header">
+  <nav class="nav">
+    <a href="index.html" class="nav-logo"><span class="dot"></span>NOVA</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="index.html#categories">Categories</a>
+      <a href="deals.html">Deals</a>
+      <a href="about.html">About</a>
+    </div>
+    <form class="nav-search" onsubmit="novaHandleSearch(event,'nav-search-input')">
+      <button type="submit" aria-label="Search">🔍</button>
+      <input id="nav-search-input" type="text" placeholder="Search gadgets...">
+    </form>
+    <div class="nav-actions">
+      <a href="shop.html?wishlist=1" class="icon-btn" aria-label="Wishlist">♡<span class="badge-count" data-wishlist-count>0</span></a>
+      <a href="account.html" class="icon-btn hide-mobile" id="nav-account-icon" aria-label="Account">👤</a>
+      <a href="cart.html" class="icon-btn" aria-label="Cart">🛍<span class="badge-count" data-cart-count>0</span></a>
+      <button class="burger" id="nova-burger" onclick="novaToggleMobileMenu()" aria-label="Menu" aria-expanded="false" aria-controls="nova-mobile-menu">☰</button>
+    </div>
+  </nav>
+</header>
+
+<div id="nova-mobile-overlay" onclick="novaCloseMobileMenu()"></div>
+<div id="nova-mobile-menu">
+  <div class="mobile-menu-head">
+    <div class="nav-logo"><span class="dot"></span>NOVA</div>
+    <button class="mobile-menu-close" onclick="novaCloseMobileMenu()" aria-label="Close menu">✕</button>
+  </div>
+  <form class="mobile-search" onsubmit="novaHandleSearch(event,'mobile-search-input')">
+    <input id="mobile-search-input" type="text" placeholder="Search gadgets...">
+    <button type="submit" aria-label="Search">🔍</button>
+  </form>
+  <nav class="mobile-links">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="index.html#categories">Categories</a>
+    <a href="deals.html">Deals</a>
+    <a href="about.html">About</a>
+    <a href="cart.html">Cart</a>
+    <a href="account.html">My Account</a>
+  </nav>
+</div>
+
+<div class="wrap"><div class="crumb"><a href="index.html">Home</a> / <a href="cart.html">Cart</a> / <span>Checkout</span></div></div>
+
+<section class="section section-dark" style="padding-top:24px;">
+  <div class="wrap">
+    <div class="section-head left" style="margin-bottom:10px;">
+      <div class="eyebrow">Almost There</div>
+      <h2>Checkout</h2>
+    </div>
+
+    <div id="checkout-empty" style="display:none;" class="cart-empty-state">
+      <div class="icon">🛍️</div>
+      <h3>Your cart is empty</h3>
+      <p>Add something to your bag before checking out.</p>
+      <a href="shop.html" class="btn btn-gradient">Start Shopping</a>
+    </div>
+
+    <div id="checkout-form">
+      <div class="checkout-progress" id="checkout-progress">
+        <div class="cp-step active" data-step="1"><div class="cp-line"></div><div class="cp-dot">1</div><div class="cp-label">Shipping</div></div>
+        <div class="cp-step" data-step="2"><div class="cp-line"></div><div class="cp-dot">2</div><div class="cp-label">Payment</div></div>
+        <div class="cp-step" data-step="3"><div class="cp-line"></div><div class="cp-dot">3</div><div class="cp-label">Review</div></div>
+      </div>
+
+      <div class="checkout-layout">
+        <div>
+
+          <!-- STEP 1: SHIPPING -->
+          <div class="checkout-step active" data-step-panel="1">
+            <div class="form-card">
+              <h3>Customer Information</h3>
+              <div class="form-grid">
+                <div class="form-field full">
+                  <label for="f-name">Full Name</label>
+                  <input type="text" id="f-name" required>
+                  <span class="field-error">Please enter your full name.</span>
+                </div>
+                <div class="form-field">
+                  <label for="f-email">Email</label>
+                  <input type="email" id="f-email" required>
+                  <span class="field-error">Please enter a valid email address.</span>
+                </div>
+                <div class="form-field">
+                  <label for="f-phone">Phone</label>
+                  <input type="tel" id="f-phone" required placeholder="09XX XXX XXXX">
+                  <span class="field-error">Please enter a valid phone number.</span>
+                </div>
+                <div class="form-field full">
+                  <label for="f-address">Address</label>
+                  <input type="text" id="f-address" required placeholder="House/unit no., street, barangay">
+                  <span class="field-error">Please enter your address.</span>
+                </div>
+                <div class="form-field">
+                  <label for="f-city">City</label>
+                  <input type="text" id="f-city" required>
+                  <span class="field-error">Please enter your city.</span>
+                </div>
+                <div class="form-field">
+                  <label for="f-province">Province</label>
+                  <input type="text" id="f-province" required>
+                  <span class="field-error">Please enter your province.</span>
+                </div>
+                <div class="form-field">
+                  <label for="f-postal">Postal Code</label>
+                  <input type="text" id="f-postal" required>
+                  <span class="field-error">Please enter a valid postal code.</span>
+                </div>
+                <div class="form-field full">
+                  <label for="f-notes">Delivery Instructions (optional)</label>
+                  <input type="text" id="f-notes" placeholder="e.g. Leave with guard, call on arrival">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-card">
+              <h3>Shipping Method</h3>
+              <div class="pay-options" id="shipping-options">
+                <label class="pay-option selected">
+                  <input type="radio" name="shipping" value="standard" checked>
+                  <span class="p-icon">📦</span>
+                  <span class="p-label">Standard — 3-5 business days<br><span style="color:var(--muted-dark);font-weight:400;font-size:11.5px;">Free over ₱3,000, otherwise ₱150</span></span>
+                </label>
+                <label class="pay-option">
+                  <input type="radio" name="shipping" value="express">
+                  <span class="p-icon">⚡</span>
+                  <span class="p-label">Express — 1-2 business days<br><span style="color:var(--muted-dark);font-weight:400;font-size:11.5px;">Flat ₱350</span></span>
+                </label>
+              </div>
+            </div>
+            <div class="step-actions">
+              <button type="button" class="btn btn-gradient" onclick="novaCheckoutNext(1)">Continue to Payment →</button>
+            </div>
+          </div>
+
+          <!-- STEP 2: PAYMENT -->
+          <div class="checkout-step" data-step-panel="2">
+            <div class="form-card">
+              <h3>Payment Method</h3>
+              <div class="pay-options" id="pay-options">
+                <label class="pay-option selected">
+                  <input type="radio" name="payment" value="cod" checked>
+                  <span class="p-icon">💵</span><span class="p-label">Cash on Delivery</span>
+                </label>
+                <label class="pay-option">
+                  <input type="radio" name="payment" value="gcash">
+                  <span class="p-icon">📲</span><span class="p-label">GCash</span>
+                </label>
+                <label class="pay-option">
+                  <input type="radio" name="payment" value="maya">
+                  <span class="p-icon">💳</span><span class="p-label">Maya</span>
+                </label>
+                <label class="pay-option">
+                  <input type="radio" name="payment" value="card">
+                  <span class="p-icon">🏦</span><span class="p-label">Credit/Debit Card</span>
+                </label>
+              </div>
+
+              <div class="pay-extra" id="pay-extra-ewallet">
+                <div class="form-grid">
+                  <div class="form-field full">
+                    <label for="f-ewallet-number">Wallet Mobile Number</label>
+                    <input type="tel" id="f-ewallet-number" placeholder="09XX XXX XXXX">
+                    <span class="field-error">Please enter the mobile number linked to this wallet.</span>
+                  </div>
+                </div>
+                <div class="qr-sim-box">
+                  <div class="qr-sim-code" id="qr-sim-code"></div>
+                  <div class="qr-sim-text">
+                    <p>Scan with your <span id="qr-wallet-name">wallet</span> app to authorize <strong id="qr-sim-amount">₱0</strong></p>
+                    <label class="filter-option" style="margin-top:8px;">
+                      <input type="checkbox" id="qr-confirm-checkbox">
+                      I've completed this payment
+                    </label>
+                    <span class="field-error" id="qr-confirm-error">Please confirm payment before continuing.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pay-extra" id="pay-extra-card">
+                <div class="form-grid">
+                  <div class="form-field full">
+                    <label for="f-card-number">Card Number <span id="card-type-label" style="color:var(--accent-blue);font-weight:700;"></span></label>
+                    <input type="text" id="f-card-number" placeholder="1234 5678 9012 3456" maxlength="19">
+                    <span class="field-error">Please enter a valid card number.</span>
+                  </div>
+                  <div class="form-field">
+                    <label for="f-card-exp">Expiry (MM/YY)</label>
+                    <input type="text" id="f-card-exp" placeholder="MM/YY" maxlength="5">
+                    <span class="field-error">Please enter a valid expiry date.</span>
+                  </div>
+                  <div class="form-field">
+                    <label for="f-card-cvv">CVV</label>
+                    <input type="text" id="f-card-cvv" placeholder="123" maxlength="4">
+                    <span class="field-error">Please enter a valid CVV.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="promo-row">
+                <input type="text" id="f-promo" placeholder="Promo code (try NOVA10)">
+                <button type="button" class="btn btn-outline-dark btn-sm" onclick="novaApplyPromo()">Apply</button>
+              </div>
+              <div class="promo-applied" id="promo-applied">
+                <span id="promo-applied-text">NOVA10 applied — 10% off</span>
+                <button type="button" onclick="novaRemovePromo()">Remove</button>
+              </div>
+            </div>
+            <div class="step-actions">
+              <button type="button" class="btn btn-outline-dark" onclick="novaCheckoutBack(2)">← Back</button>
+              <button type="button" class="btn btn-gradient" onclick="novaCheckoutNext(2)">Continue to Review →</button>
+            </div>
+          </div>
+
+          <!-- STEP 3: REVIEW -->
+          <div class="checkout-step" data-step-panel="3">
+            <div class="form-card">
+              <h3>Review Your Order</h3>
+              <div class="review-block">
+                <div class="review-block-head"><h4>Ship To</h4><button class="review-edit" onclick="novaShowStep(1)">Edit</button></div>
+                <p id="review-shipping">—</p>
+              </div>
+              <div class="review-block">
+                <div class="review-block-head"><h4>Shipping Method</h4><button class="review-edit" onclick="novaShowStep(1)">Edit</button></div>
+                <p id="review-shipping-method">—</p>
+              </div>
+              <div class="review-block">
+                <div class="review-block-head"><h4>Payment Method</h4><button class="review-edit" onclick="novaShowStep(2)">Edit</button></div>
+                <p id="review-payment">—</p>
+              </div>
+              <div class="review-block">
+                <div class="review-block-head"><h4>Items</h4></div>
+                <div id="review-items"></div>
+              </div>
+            </div>
+            <div class="step-actions">
+              <button type="button" class="btn btn-outline-dark" onclick="novaCheckoutBack(3)">← Back</button>
+              <button type="button" class="btn btn-gradient" id="place-order-btn" onclick="novaPlaceOrder()">Place Order</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div>
+          <div class="summary-card">
+            <h3 style="font-size:16px;margin-bottom:16px;">Order Summary</h3>
+            <div id="checkout-items" style="margin-bottom:14px;"></div>
+            <div class="summary-row"><span>Subtotal</span><span id="co-subtotal">₱0</span></div>
+            <div class="summary-row discount" id="co-discount-row" style="display:none;"><span>Promo Discount</span><span id="co-discount">−₱0</span></div>
+            <div class="summary-row"><span>Shipping</span><span id="co-shipping">₱0</span></div>
+            <div class="summary-row total"><span>Total</span><span id="co-total">₱0</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUCCESS OVERLAY -->
+<div id="success-overlay">
+  <div class="success-check">
+    <svg viewBox="0 0 24 24"><path d="M4 12l6 6L20 6"/></svg>
+  </div>
+  <h2>Order Confirmed!</h2>
+  <p>Thanks for shopping with NOVA. A confirmation has been sent to your email.</p>
+  <p id="success-delivery-estimate" style="color:#4ADE80;font-weight:600;"></p>
+  <div class="order-num" id="success-order-num">NOVA-000000</div>
+  <a href="track-order.html" class="btn btn-gradient" id="track-order-btn">Track My Order</a>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="nav-logo" style="margin-bottom:14px;"><span class="dot"></span>NOVA</div>
+        <p style="color:var(--muted-dark);font-size:13px;max-width:260px;line-height:1.7;">Premium gadgets for the way you actually live. Discover what's next.</p>
+      </div>
+      <div>
+        <h5>Shop</h5>
+        <ul><li><a href="shop.html">All Products</a></li><li><a href="deals.html">Deals</a></li><li><a href="index.html#categories">Categories</a></li></ul>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul><li><a href="about.html">About NOVA</a></li><li><a href="track-order.html">Track Order</a></li><li><a href="cart.html">Your Cart</a></li></ul>
+      </div>
+      <div>
+        <h5>Support</h5>
+        <ul><li><a href="#">Shipping Info</a></li><li><a href="#">Returns</a></li><li><a href="#">Contact Us</a></li></ul>
+      </div>
+      <div>
+        <h5>Legal</h5>
+        <ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 NOVA Technology Co. All rights reserved.</span>
+      <span>Prices in PHP (₱). Taxes calculated at checkout.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const NOVA_CATEGORIES = [
+  { id: 'mobile',      label: 'Mobile',          icon: '📱', image: 'mobile.png' },
+  { id: 'audio',       label: 'Audio',           icon: '🎧', image: 'https://images.unsplash.com/photo-1553774661-0651f14b2da4?w=600&h=450&fit=crop&auto=format&q=80' },
+  { id: 'gaming',      label: 'Gaming',          icon: '🎮', image: 'https://images.unsplash.com/photo-1518719028738-e7262020a932?w=600&h=450&fit=crop&auto=format&q=80' },
+  { id: 'pc',          label: 'PC & Laptop',     icon: '💻', image: 'https://images.unsplash.com/photo-1630201129622-a8e8ef3f7245?w=600&h=450&fit=crop&auto=format&q=80' },
+  { id: 'smart-home',  label: 'Smart Home',      icon: '🏠', image: 'https://images.unsplash.com/photo-1633194883650-df448a10d554?w=600&h=450&fit=crop&auto=format&q=80' },
+  { id: 'wearables',   label: 'Wearables',       icon: '⌚', image: 'https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=600&h=450&fit=crop&auto=format&q=80' },
+  { id: 'accessories', label: 'Accessories',     icon: '🔌', image: 'https://images.unsplash.com/photo-1615086169217-83e1c06c9f4f?w=600&h=450&fit=crop&auto=format&q=80' },
+  { id: 'power',       label: 'Power & Charging',icon: '⚡', image: 'https://images.unsplash.com/photo-1604160687800-f7799a525a33?w=600&h=450&fit=crop&auto=format&q=80' },
+];
+
+const NOVA_PRODUCTS = [
+  {
+    id: 'magsafe-case', name: 'MagSafe-Compatible Phone Case', category: 'mobile',
+    price: 1999, originalPrice: 2199, rating: 4.6, reviewCount: 218, sold: 1340,
+    dateAdded: '2026-06-02', badge: null, stock: 86, colors: ['Graphite','Sand','Sage'],
+    description: 'A slim polycarbonate case with a reinforced magnetic ring, built for effortless one-hand mounting and MagSafe-standard charging. Raised bezels protect the screen and camera on drops up to 2m.',
+    specs: { 'Compatibility': 'Universal MagSafe standard', 'Material': 'Polycarbonate + TPU liner', 'Drop rating': '2m (MIL-STD-810G)', 'Weight': '32g' },
+    art: { gradient: '135deg,#3B3F8C,#7C4DFF', icon: '📱' },
+    image: 'https://images.unsplash.com/photo-1764116679125-b1db58fb37f1?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'iphone-17e', name: 'iPhone 17e', category: 'mobile',
+    price: 33499, originalPrice: null, rating: 4.4, reviewCount: 540, sold: 1500,
+    dateAdded: '2026-03-11', badge: null, stock: 74, colors: ['Black','White','Soft Pink'],
+    description: 'Apple\'s most affordable current iPhone, carrying over the A19 chip for flagship-level speed while keeping the classic Face ID notch. First "e" model with MagSafe support, plus a big jump in base storage over the previous generation.',
+    specs: { 'Display': '6.1" Super Retina XDR, 60Hz', 'Chip': 'A19', 'Storage': '256GB / 512GB', 'Rear Camera': '48MP Fusion, 2x optical-quality Telephoto', 'Front Camera': '18MP Center Stage', 'Charging': 'USB-C, MagSafe up to 15W', 'Durability': 'Ceramic Shield 2' },
+    art: { gradient: '135deg,#1F2937,#F4A6C1', icon: '📱' },
+    image: 'https://images.unsplash.com/photo-1629494893504-d41e26a02631?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'iphone-17', name: 'iPhone 17', category: 'mobile',
+    price: 44699, originalPrice: null, rating: 4.7, reviewCount: 3210, sold: 8100,
+    dateAdded: '2025-09-19', badge: 'Best Seller', stock: 96, colors: ['Black','Lavender','Mist Blue','Sage','White'],
+    description: 'The standard iPhone 17 closes the gap with the Pro line, adding a 120Hz ProMotion display and doubling base storage to 256GB at the same starting price as its predecessor. A dual 48MP Fusion camera system and the A19 chip cover nearly everything most people need.',
+    specs: { 'Display': '6.3" Super Retina XDR, ProMotion 120Hz', 'Chip': 'A19', 'Storage': '256GB / 512GB / 1TB', 'Rear Camera': 'Dual 48MP Fusion (Main + Ultra Wide)', 'Front Camera': '18MP Center Stage', 'Battery': '3,692 mAh', 'Build': 'Unibody aluminum, Ceramic Shield 2' },
+    art: { gradient: '135deg,#4C1D95,#93C5FD', icon: '📱' },
+    image: 'https://images.unsplash.com/photo-1581287053822-fd7bf4f4bfec?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'iphone-17-air', name: 'iPhone 17 Air', category: 'mobile',
+    price: 55899, originalPrice: null, rating: 4.6, reviewCount: 890, sold: 2100,
+    dateAdded: '2025-09-19', badge: 'New', stock: 52, colors: ['Sky Blue','Light Gold','Cloud White','Space Black'],
+    description: 'Replacing the Plus model, the iPhone 17 Air is Apple\'s thinnest iPhone yet at 5.64mm, trading a second rear lens for a dramatically slimmer, lighter build. The A19 Pro chip keeps performance flagship-grade despite the smaller frame.',
+    specs: { 'Display': '6.5" Super Retina XDR, ProMotion', 'Chip': 'A19 Pro', 'Thickness': '5.64mm', 'Weight': '165g', 'Rear Camera': 'Single 48MP Fusion Main, 2x optical zoom', 'Front Camera': '18MP Center Stage', 'Battery': '3,149 mAh' },
+    art: { gradient: '135deg,#1E3A8A,#FDE68A', icon: '📱' },
+    image: 'https://images.unsplash.com/photo-1634403665481-74948d815f03?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'iphone-17-pro', name: 'iPhone 17 Pro', category: 'mobile',
+    price: 61499, originalPrice: null, rating: 4.8, reviewCount: 1980, sold: 4700,
+    dateAdded: '2025-09-19', badge: null, stock: 60, colors: ['Cosmic Orange','Deep Blue','Silver'],
+    description: 'A redesigned horizontal camera bar houses three 48MP Fusion lenses, delivering the longest optical-quality zoom ever on iPhone at 8x. A new vapor chamber and aluminum unibody keep the A19 Pro chip cool under sustained load, for gaming or long 4K shoots.',
+    specs: { 'Display': '6.3" Super Retina XDR, ProMotion 120Hz', 'Chip': 'A19 Pro', 'Storage': '256GB / 512GB / 1TB', 'Rear Camera': 'Triple 48MP Fusion, 8x optical-quality zoom', 'Front Camera': '18MP Center Stage', 'Build': 'Aluminum unibody, vapor chamber cooling', 'Durability': 'Ceramic Shield 2, front and back' },
+    art: { gradient: '135deg,#111827,#F97316', icon: '📱' },
+    image: 'https://images.unsplash.com/photo-1695973056925-0d065f12befd?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'iphone-17-pro-max', name: 'iPhone 17 Pro Max', category: 'mobile',
+    price: 67099, originalPrice: null, rating: 4.9, reviewCount: 2840, sold: 6200,
+    dateAdded: '2025-09-19', badge: 'New', stock: 48, colors: ['Cosmic Orange','Deep Blue','Silver'],
+    description: 'The largest and longest-lasting iPhone in the lineup, pairing a 6.9" ProMotion display with Apple\'s biggest iPhone battery to date. Shares the Pro\'s triple 48MP Fusion camera system and adds a 2TB storage option for anyone who shoots ProRes video.',
+    specs: { 'Display': '6.9" Super Retina XDR, ProMotion 120Hz', 'Chip': 'A19 Pro', 'Storage': '256GB / 512GB / 1TB / 2TB', 'Rear Camera': 'Triple 48MP Fusion, 8x optical-quality zoom', 'Front Camera': '18MP Center Stage', 'Build': 'Aluminum unibody, vapor chamber cooling', 'Battery': 'Largest capacity in iPhone lineup' },
+    art: { gradient: '135deg,#0B1220,#1D4ED8', icon: '📱' },
+    image: 'https://images.unsplash.com/photo-1695973056905-73ac6275b2f7?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'usbc-charger-20w', name: '20W USB-C Fast Charger', category: 'power',
+    price: 1099, originalPrice: null, rating: 4.7, reviewCount: 542, sold: 3120,
+    dateAdded: '2025-11-10', badge: 'Best Seller', stock: 210, colors: ['White','Black'],
+    description: 'A compact wall charger with Power Delivery 3.0, reaching 50% charge in around 25 minutes on supported devices. Small enough to leave in every bag.',
+    specs: { 'Output': '20W USB-C PD 3.0', 'Input': '100–240V', 'Weight': '34g', 'Safety': 'Over-current & thermal protection' },
+    art: { gradient: '135deg,#1F2937,#4F46E5', icon: '⚡' },
+    image: 'https://images.unsplash.com/photo-1664457225218-b2ac27fa73df?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'wireless-charger', name: 'Magnetic Wireless Charger', category: 'power',
+    price: 1699, originalPrice: 1999, rating: 4.5, reviewCount: 189, sold: 980,
+    dateAdded: '2026-05-18', badge: null, stock: 64, colors: ['White','Black'],
+    description: 'A magnetic 15W charging puck that snaps into perfect alignment every time, with a braided 1.5m cable and non-slip base for nightstand use.',
+    specs: { 'Output': '15W max', 'Cable': '1.5m braided USB-C', 'Alignment': 'Magnetic auto-align' },
+    art: { gradient: '135deg,#4C1D95,#7C3AED', icon: '🔋' },
+    image: 'https://images.unsplash.com/photo-1633381638729-27f730955c23?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'power-bank-20k', name: '20,000mAh Power Bank', category: 'power',
+    price: 2799, originalPrice: 3599, rating: 4.8, reviewCount: 674, sold: 2890,
+    dateAdded: '2025-09-04', badge: 'Best Seller', stock: 140, colors: ['Slate'],
+    description: 'High-capacity power bank with dual USB-C PD ports for charging two devices at full speed, plus a digital percentage display so you always know what\'s left in the tank.',
+    specs: { 'Capacity': '20,000mAh', 'Output': '2x USB-C PD 20W', 'Display': 'Digital % readout', 'Recharge time': '~3.5 hrs' },
+    art: { gradient: '135deg,#111827,#6366F1', icon: '🔋' },
+    image: 'https://images.unsplash.com/photo-1545235616-db3cd822ad8c?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'airbuds-pro', name: 'NOVA AirBuds Pro', category: 'audio',
+    price: 7199, originalPrice: 8899, rating: 4.8, reviewCount: 1204, sold: 4310,
+    dateAdded: '2025-08-20', badge: 'Best Seller', stock: 96, colors: ['Black','White'],
+    description: 'Active noise cancelling earbuds tuned for balanced, detailed sound. Adaptive transparency mode lets ambient noise in when you need it, and the case adds three extra full charges on the go.',
+    specs: { 'Driver': '11mm dynamic', 'ANC': 'Adaptive, up to 32dB', 'Battery': '6h buds + 24h case', 'Water resistance': 'IPX4' },
+    art: { gradient: '135deg,#111827,#8B5CF6', icon: '🎧' },
+    image: 'https://images.unsplash.com/photo-1655560378428-7605bda51749?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'pulse-headphones', name: 'NOVA Pulse Headphones', category: 'audio',
+    price: 11099, originalPrice: 13899, rating: 4.7, reviewCount: 356, sold: 1120,
+    dateAdded: '2026-01-15', badge: 'New', stock: 58, colors: ['Black','Cream'],
+    description: 'Over-ear headphones with 40mm drivers and a memory-foam headband built for full-day wear. Hybrid ANC cuts low-frequency drone on commutes without flattening the mix.',
+    specs: { 'Driver': '40mm dynamic', 'ANC': 'Hybrid feedforward/feedback', 'Battery': 'Up to 40 hrs', 'Folding': 'Yes, travel case included' },
+    art: { gradient: '135deg,#312E81,#A855F7', icon: '🎧' },
+    image: 'https://images.unsplash.com/photo-1737291937135-3a0fcb5e0c44?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'bt-speaker', name: 'Portable Bluetooth Speaker', category: 'audio',
+    price: 4499, originalPrice: null, rating: 4.5, reviewCount: 289, sold: 1560,
+    dateAdded: '2025-10-11', badge: null, stock: 74, colors: ['Black','Blue'],
+    description: 'A pocketable IP67-rated speaker with surprising low-end for its size, plus a 16-hour battery and speakerphone mic for calls at the campsite.',
+    specs: { 'Output': '20W', 'Battery': 'Up to 16 hrs', 'Water resistance': 'IP67', 'Pairing': 'Bluetooth 5.3, stereo pairing' },
+    art: { gradient: '135deg,#1E3A8A,#3B82F6', icon: '🔊' },
+    image: 'https://images.unsplash.com/photo-1549400854-b4300f444934?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'gaming-headset', name: 'Wireless Gaming Headset', category: 'audio',
+    price: 4999, originalPrice: 6199, rating: 4.6, reviewCount: 412, sold: 1680,
+    dateAdded: '2025-12-02', badge: null, stock: 62, colors: ['Black'],
+    description: 'Low-latency 2.4GHz wireless headset with a detachable boom mic and 50mm drivers tuned for footstep detail. 20-hour battery keeps up with the longest sessions.',
+    specs: { 'Connection': '2.4GHz wireless + Bluetooth', 'Latency': '<40ms', 'Battery': 'Up to 20 hrs', 'Mic': 'Detachable noise-cancelling boom' },
+    art: { gradient: '135deg,#0F172A,#6D28D9', icon: '🎮' },
+    image: 'https://images.unsplash.com/photo-1561580755-7ebd62dc260e?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'rgb-keyboard', name: 'Mechanical RGB Keyboard', category: 'gaming',
+    price: 5599, originalPrice: null, rating: 4.7, reviewCount: 331, sold: 1240,
+    dateAdded: '2025-07-22', badge: null, stock: 48, colors: ['Black'],
+    description: 'Hot-swappable mechanical keyboard with per-key RGB and a aluminum top plate for a satisfying, stable typing feel — equally at home gaming or writing code.',
+    specs: { 'Switches': 'Hot-swappable mechanical', 'Backlight': 'Per-key RGB', 'Frame': 'Aluminum top plate', 'Connection': 'USB-C detachable' },
+    art: { gradient: '135deg,#18181B,#9333EA', icon: '⌨️' },
+    image: 'https://images.unsplash.com/photo-1646505262769-db0b272acb7d?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'gaming-mouse', name: 'Wireless Gaming Mouse', category: 'gaming',
+    price: 3399, originalPrice: 4199, rating: 4.6, reviewCount: 267, sold: 1410,
+    dateAdded: '2026-02-08', badge: 'New', stock: 70, colors: ['Black','White'],
+    description: 'A 62g ultralight wireless mouse with a 26,000 DPI optical sensor and zero perceptible click latency, built for competitive play.',
+    specs: { 'Sensor': '26,000 DPI optical', 'Weight': '62g', 'Battery': 'Up to 70 hrs', 'Polling rate': '1000Hz' },
+    art: { gradient: '135deg,#1E1B4B,#7C3AED', icon: '🖱️' },
+    image: 'https://images.unsplash.com/photo-1703052398270-27b5b394ee35?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'gaming-controller', name: 'Gaming Controller', category: 'gaming',
+    price: 3099, originalPrice: null, rating: 4.4, reviewCount: 198, sold: 890,
+    dateAdded: '2025-09-30', badge: null, stock: 55, colors: ['Black','Purple'],
+    description: 'A cross-platform wireless controller with textured grips and remappable back paddles, compatible with PC, console and mobile via Bluetooth.',
+    specs: { 'Connection': 'Bluetooth + USB-C wired', 'Battery': 'Up to 24 hrs', 'Compatibility': 'PC, console, mobile', 'Extras': '2 remappable back paddles' },
+    art: { gradient: '135deg,#3B0764,#A855F7', icon: '🎮' },
+    image: 'https://images.unsplash.com/photo-1600861194942-f883de0dfe96?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'gaming-mousepad', name: 'XL Gaming Mousepad', category: 'gaming',
+    price: 1399, originalPrice: null, rating: 4.5, reviewCount: 145, sold: 760,
+    dateAdded: '2025-06-14', badge: null, stock: 120, colors: ['Black'],
+    description: 'A full-desk stitched-edge mousepad with a consistent low-friction weave for pixel-precise tracking, front to back.',
+    specs: { 'Size': '900 x 400mm', 'Base': 'Non-slip rubber', 'Edges': 'Stitched anti-fray' },
+    art: { gradient: '135deg,#111827,#4C1D95', icon: '🖱️' },
+    image: 'https://images.unsplash.com/photo-1629429407759-01cd3d7cfb38?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'usbc-hub', name: 'USB-C Hub', category: 'pc',
+    price: 2199, originalPrice: null, rating: 4.5, reviewCount: 231, sold: 1030,
+    dateAdded: '2025-10-25', badge: null, stock: 90, colors: ['Space Gray'],
+    description: 'A 7-in-1 hub that turns a single USB-C port into HDMI 4K@60, three USB-A, an SD/microSD reader, and 100W passthrough charging.',
+    specs: { 'Ports': 'HDMI, 3x USB-A, SD/microSD, USB-C PD', 'Video': '4K@60Hz', 'Passthrough': '100W' },
+    art: { gradient: '135deg,#1F2937,#3B82F6', icon: '🔌' },
+    image: 'https://images.unsplash.com/photo-1489436969537-cf0c1dc69cba?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'laptop-stand', name: 'Laptop Stand', category: 'pc',
+    price: 2499, originalPrice: null, rating: 4.6, reviewCount: 176, sold: 640,
+    dateAdded: '2025-08-05', badge: null, stock: 66, colors: ['Silver','Gray'],
+    description: 'An adjustable aluminum stand that lifts your laptop to eye level and improves airflow, folding flat to slip into a bag.',
+    specs: { 'Material': 'Aircraft-grade aluminum', 'Adjustability': '6 height positions', 'Max load': '10kg', 'Folded size': '25 x 10cm' },
+    art: { gradient: '135deg,#334155,#8B5CF6', icon: '💻' },
+    image: 'https://images.unsplash.com/photo-1646497982786-e92e5470df33?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'webcam-1080p', name: '1080p Webcam', category: 'pc',
+    price: 3099, originalPrice: 3899, rating: 4.4, reviewCount: 208, sold: 970,
+    dateAdded: '2025-11-28', badge: null, stock: 58, colors: ['Black'],
+    description: 'A 1080p/60fps webcam with auto low-light correction and a built-in privacy shutter, plus dual mics for cleaner call audio.',
+    specs: { 'Resolution': '1080p @ 60fps', 'FOV': '90°', 'Mic': 'Dual noise-reducing', 'Privacy': 'Physical shutter' },
+    art: { gradient: '135deg,#0F172A,#6366F1', icon: '📷' },
+    image: 'https://images.unsplash.com/photo-1750975314977-374f2290db53?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'kb-mouse-combo', name: 'Wireless Keyboard & Mouse', category: 'pc',
+    price: 2799, originalPrice: null, rating: 4.5, reviewCount: 254, sold: 1180,
+    dateAdded: '2025-07-09', badge: null, stock: 84, colors: ['Black','White'],
+    description: 'A quiet-key wireless combo with a scissor-switch keyboard and a precise 3-button mouse, both running on a single 2.4GHz receiver.',
+    specs: { 'Connection': '2.4GHz single receiver', 'Battery': 'Up to 12 months (keyboard)', 'Layout': 'Full-size with numpad' },
+    art: { gradient: '135deg,#1E293B,#7C3AED', icon: '⌨️' },
+    image: 'https://images.unsplash.com/photo-1721036469059-ab07e6bb6508?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'led-strip', name: 'Smart LED Strip', category: 'smart-home',
+    price: 1699, originalPrice: null, rating: 4.6, reviewCount: 421, sold: 2210,
+    dateAdded: '2025-09-15', badge: null, stock: 130, colors: ['5m Kit'],
+    description: 'App-controlled RGBIC light strip that syncs to music or on-screen color in real time, with scenes for focus, wind-down, or a party.',
+    specs: { 'Length': '5m, extendable', 'Control': 'App + voice assistant', 'Modes': 'Music sync, scenes, schedules' },
+    art: { gradient: '135deg,#312E81,#EC4899', icon: '💡' },
+    image: 'https://images.unsplash.com/photo-1650420790335-1a9746f64864?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'smart-plug', name: 'Smart Plug', category: 'smart-home',
+    price: 799, originalPrice: null, rating: 4.5, reviewCount: 512, sold: 3040,
+    dateAdded: '2025-05-20', badge: null, stock: 200, colors: ['White'],
+    description: 'A compact Wi-Fi plug that adds scheduling and remote control to any lamp or appliance — no hub required, set up in under a minute.',
+    specs: { 'Connection': 'Wi-Fi 2.4GHz, no hub', 'Max load': '15A / 1800W', 'Voice control': 'Yes' },
+    art: { gradient: '135deg,#1F2937,#22D3EE', icon: '🔌' },
+    image: 'https://images.unsplash.com/photo-1565049981953-379c9c2a5d48?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'night-light', name: 'Smart Night Light', category: 'smart-home',
+    price: 1099, originalPrice: null, rating: 4.3, reviewCount: 167, sold: 850,
+    dateAdded: '2025-12-19', badge: null, stock: 95, colors: ['White'],
+    description: 'A motion-aware night light with adjustable warmth and brightness, dimming automatically on a schedule you set once.',
+    specs: { 'Sensor': 'Motion + ambient light', 'Color temp': '2700K–4000K adjustable', 'Power': 'USB-C, plug-in base' },
+    art: { gradient: '135deg,#312E81,#F59E0B', icon: '🏠' },
+    image: 'https://images.unsplash.com/photo-1728473577296-309fa0ac619b?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'security-camera', name: 'Smart Security Camera', category: 'smart-home',
+    price: 3899, originalPrice: 4999, rating: 4.7, reviewCount: 389, sold: 1590,
+    dateAdded: '2026-03-01', badge: 'New', stock: 72, colors: ['White','Black'],
+    description: '2K indoor/outdoor camera with color night vision, two-way audio, and on-device motion zones so you only get the alerts that matter.',
+    specs: { 'Resolution': '2K with color night vision', 'Storage': 'MicroSD + optional cloud', 'Weather rating': 'IP65', 'Audio': 'Two-way' },
+    art: { gradient: '135deg,#111827,#0EA5E9', icon: '📷' },
+    image: 'https://images.unsplash.com/photo-1495714096525-285e85481946?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'nova-watch', name: 'NOVA Watch', category: 'wearables',
+    price: 13899, originalPrice: 16199, rating: 4.8, reviewCount: 601, sold: 1980,
+    dateAdded: '2026-04-10', badge: 'New', stock: 44, colors: ['Graphite','Silver','Rose Gold'],
+    description: 'A sapphire-glass smartwatch with always-on display, dual-frequency GPS, and up to 6 days of battery — built to disappear into daily life, not demand attention from it.',
+    specs: { 'Display': '1.5" AMOLED, always-on', 'Battery': 'Up to 6 days', 'GPS': 'Dual-frequency', 'Water resistance': '5ATM' },
+    art: { gradient: '135deg,#18181B,#A78BFA', icon: '⌚' },
+    image: 'https://images.unsplash.com/photo-1777496410128-926b2d0083f9?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'fitness-band', name: 'Fitness Smart Band', category: 'wearables',
+    price: 3399, originalPrice: null, rating: 4.5, reviewCount: 344, sold: 1670,
+    dateAdded: '2025-08-28', badge: null, stock: 88, colors: ['Black','Pink'],
+    description: 'A featherlight fitness tracker with continuous heart-rate and sleep tracking, plus a 14-day battery so it stays out of your way.',
+    specs: { 'Battery': 'Up to 14 days', 'Tracking': 'Heart rate, SpO2, sleep', 'Water resistance': '5ATM' },
+    art: { gradient: '135deg,#312E81,#EC4899', icon: '⌚' },
+    image: 'https://images.unsplash.com/photo-1641361777339-0ee075cf3ab4?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'smart-tracker', name: 'Wireless Smart Tracker', category: 'wearables',
+    price: 1399, originalPrice: null, rating: 4.4, reviewCount: 298, sold: 1520,
+    dateAdded: '2025-10-02', badge: null, stock: 160, colors: ['White'],
+    description: 'A coin-sized Bluetooth tracker for keys, bags, or a wallet, with a replaceable battery lasting up to a year and a loud find-it chime.',
+    specs: { 'Range': 'Up to 120m Bluetooth', 'Battery': 'Replaceable, ~1 year', 'Network': 'Crowd-find network compatible' },
+    art: { gradient: '135deg,#1E293B,#38BDF8', icon: '📍' },
+    image: 'https://images.unsplash.com/photo-1675582090584-4ae9400f7326?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'usbc-cable', name: 'Braided USB-C Cable (2m)', category: 'accessories',
+    price: 699, originalPrice: null, rating: 4.6, reviewCount: 623, sold: 4020,
+    dateAdded: '2025-06-01', badge: 'Best Seller', stock: 300, colors: ['Black','White'],
+    description: 'A reinforced 2-meter braided cable rated for 100W charging and 480Mbps data, tested to 20,000+ bend cycles.',
+    specs: { 'Length': '2m', 'Power': '100W PD', 'Data': 'USB 2.0, 480Mbps', 'Durability': '20,000+ bend cycles' },
+    art: { gradient: '135deg,#111827,#818CF8', icon: '🔌' },
+    image: 'https://images.unsplash.com/photo-1619459072761-496c0812331b?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+  {
+    id: 'device-stand', name: 'Universal Device Stand', category: 'accessories',
+    price: 1299, originalPrice: null, rating: 4.5, reviewCount: 154, sold: 710,
+    dateAdded: '2025-11-15', badge: null, stock: 100, colors: ['Silver'],
+    description: 'A foldable aluminum stand that adapts to phones and tablets alike, with a non-slip cradle and cable cutout for tidy charging.',
+    specs: { 'Material': 'Aluminum', 'Compatibility': 'Phones & tablets up to 13"', 'Folded': 'Flat, pocketable' },
+    art: { gradient: '135deg,#1F2937,#60A5FA', icon: '📱' },
+    image: 'https://images.unsplash.com/photo-1679361100081-5acfc212d632?w=600&h=600&fit=crop&auto=format&q=80'
+  },
+];
+
+function novaFormatPrice(n){
+  return '₱' + Math.round(n).toLocaleString();
+}
+function novaDiscountPct(p){
+  if(!p.originalPrice) return 0;
+  return Math.round((1 - p.price / p.originalPrice) * 100);
+}
+function novaGetProduct(id){
+  return NOVA_PRODUCTS.find(p => p.id === id);
+}
+function novaCategoryLabel(catId){
+  const c = NOVA_CATEGORIES.find(c => c.id === catId);
+  return c ? c.label : catId;
+}
+
+function novaProductCardHTML(p){
+  const discount = novaDiscountPct(p);
+  const wished = (typeof novaIsWishlisted === 'function') && novaIsWishlisted(p.id);
+  const media = p.image
+    ? `<img src="${p.image}" alt="${p.name}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">`
+    : `<div class="p-art" style="background:linear-gradient(${p.art.gradient});position:absolute;inset:8px;"><span class="icon">${p.art.icon}</span></div>`;
+  return `
+  <div class="product-card" data-id="${p.id}">
+    <div class="pc-media">
+      ${p.badge ? `<span class="pc-badge">${p.badge}</span>` : ''}
+      ${discount ? `<span class="pc-discount">-${discount}%</span>` : ''}
+      <a href="product.html?id=${p.id}" aria-label="View ${p.name}">
+        ${media}
+      </a>
+      <button class="pc-wishlist ${wished ? 'active' : ''}" aria-label="Toggle wishlist" onclick="novaHandleWishlistClick(event,'${p.id}')">${wished ? '♥' : '♡'}</button>
+      <button class="pc-compare ${(typeof novaIsComparing === 'function' && novaIsComparing(p.id)) ? 'active' : ''}" aria-label="Add to compare" onclick="novaHandleCompareClick(event,'${p.id}')" data-compare-id="${p.id}">⚖</button>
+    </div>
+    <div class="pc-body">
+      <div class="pc-cat">${novaCategoryLabel(p.category)}</div>
+      <div class="pc-name"><a href="product.html?id=${p.id}">${p.name}</a></div>
+      <div class="pc-rating"><span class="stars">${novaStarString(p.rating)}</span> ${p.rating} (${p.reviewCount})</div>
+      <div class="pc-price-row">
+        <span class="pc-price">${novaFormatPrice(p.price)}</span>
+        ${p.originalPrice ? `<span class="pc-price-orig">${novaFormatPrice(p.originalPrice)}</span>` : ''}
+      </div>
+      <div class="pc-foot">
+        <button class="pc-add" onclick="novaHandleAddClick(event,'${p.id}')">Add to Cart</button>
+      </div>
+    </div>
+  </div>`;
+}
+function novaStarString(rating){
+  const full = Math.round(rating);
+  return '★★★★★☆☆☆☆☆'.slice(5-full, 10-full);
+}
+function novaHandleAddClick(e, id){
+  e.preventDefault(); e.stopPropagation();
+  const p = novaGetProduct(id);
+  novaAddToCart(id, p.colors[0], 1);
+  novaToast(p.name + ' added to cart');
+}
+function novaHandleWishlistClick(e, id){
+  e.preventDefault(); e.stopPropagation();
+  const active = novaToggleWishlist(id);
+  e.currentTarget.classList.toggle('active', active);
+  e.currentTarget.textContent = active ? '♥' : '♡';
+  novaToast(active ? 'Added to wishlist' : 'Removed from wishlist');
+}
+</script>
+<script>
+const NOVA_CART_KEY = 'nova_cart';
+const NOVA_WISHLIST_KEY = 'nova_wishlist';
+const NOVA_SHIPPING_FLAT = 150;
+const NOVA_FREE_SHIPPING_THRESHOLD = 3000;
+
+function novaGetCart(){
+  try{ return JSON.parse(localStorage.getItem(NOVA_CART_KEY)) || []; }
+  catch(e){ return []; }
+}
+function novaSaveCart(cart){
+  localStorage.setItem(NOVA_CART_KEY, JSON.stringify(cart));
+  novaSyncBadges();
+}
+function novaAddToCart(id, color, qty){
+  qty = qty || 1;
+  const cart = novaGetCart();
+  const existing = cart.find(i => i.id === id && i.color === color);
+  if(existing){ existing.qty += qty; }
+  else{ cart.push({ id, color, qty }); }
+  novaSaveCart(cart);
+  return cart;
+}
+function novaUpdateQty(id, color, qty){
+  let cart = novaGetCart();
+  const item = cart.find(i => i.id === id && i.color === color);
+  if(!item) return cart;
+  item.qty = qty;
+  if(item.qty <= 0){ cart = cart.filter(i => !(i.id === id && i.color === color)); }
+  novaSaveCart(cart);
+  return cart;
+}
+function novaRemoveFromCart(id, color){
+  const cart = novaGetCart().filter(i => !(i.id === id && i.color === color));
+  novaSaveCart(cart);
+  return cart;
+}
+function novaCartCount(){
+  return novaGetCart().reduce((sum,i)=>sum+i.qty,0);
+}
+function novaCartLines(){
+  return novaGetCart().map(item => {
+    const p = novaGetProduct(item.id);
+    if(!p) return null;
+    return { ...item, product: p, lineTotal: p.price * item.qty };
+  }).filter(Boolean);
+}
+function novaCartSubtotal(){
+  return novaCartLines().reduce((sum,l)=>sum+l.lineTotal,0);
+}
+
+function novaGetWishlist(){
+  try{ return JSON.parse(localStorage.getItem(NOVA_WISHLIST_KEY)) || []; }
+  catch(e){ return []; }
+}
+function novaSaveWishlist(list){
+  localStorage.setItem(NOVA_WISHLIST_KEY, JSON.stringify(list));
+  novaSyncBadges();
+}
+function novaToggleWishlist(id){
+  let list = novaGetWishlist();
+  if(list.includes(id)){ list = list.filter(x => x !== id); }
+  else{ list.push(id); }
+  novaSaveWishlist(list);
+  return list.includes(id);
+}
+function novaIsWishlisted(id){
+  return novaGetWishlist().includes(id);
+}
+
+function novaSyncBadges(){
+  document.querySelectorAll('[data-cart-count]').forEach(el => el.textContent = novaCartCount());
+  document.querySelectorAll('[data-wishlist-count]').forEach(el => el.textContent = novaGetWishlist().length);
+}
+
+function novaToast(msg){
+  let t = document.getElementById('nova-toast');
+  if(!t){
+    t = document.createElement('div');
+    t.id = 'nova-toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window.__novaToastTimer);
+  window.__novaToastTimer = setTimeout(()=> t.classList.remove('show'), 2200);
+}
+
+document.addEventListener('DOMContentLoaded', novaSyncBadges);
+</script>
+<script>
+const NOVA_USERS_KEY = 'nova_users';
+const NOVA_SESSION_KEY = 'nova_session';
+const NOVA_ORDERS_KEY = 'nova_orders';
+
+function novaGetUsers(){
+  try{ return JSON.parse(localStorage.getItem(NOVA_USERS_KEY)) || {}; }
+  catch(e){ return {}; }
+}
+function novaSaveUsers(users){
+  localStorage.setItem(NOVA_USERS_KEY, JSON.stringify(users));
+}
+function novaGetCurrentUserEmail(){
+  return localStorage.getItem(NOVA_SESSION_KEY);
+}
+function novaGetCurrentUser(){
+  const email = novaGetCurrentUserEmail();
+  if(!email) return null;
+  return novaGetUsers()[email] || null;
+}
+function novaSetSession(email){
+  localStorage.setItem(NOVA_SESSION_KEY, email);
+}
+function novaClearSession(){
+  localStorage.removeItem(NOVA_SESSION_KEY);
+}
+
+function novaSyncAccountNav(){
+  const icon = document.getElementById('nav-account-icon');
+  if(!icon) return;
+  const user = novaGetCurrentUser();
+  if(user){
+    icon.textContent = user.name.trim().charAt(0).toUpperCase();
+    icon.title = 'Signed in as ' + user.name;
+    icon.style.background = 'var(--gradient)';
+    icon.style.fontWeight = '700';
+    icon.style.fontSize = '13px';
+  } else {
+    icon.textContent = '👤';
+    icon.removeAttribute('title');
+    icon.style.background = '';
+    icon.style.fontWeight = '';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', novaSyncAccountNav);
+
+const NOVA_RECENTLY_VIEWED_KEY = 'nova_recently_viewed';
+const NOVA_RECENTLY_VIEWED_MAX = 8;
+
+function novaTrackRecentlyViewed(id){
+  let list = JSON.parse(localStorage.getItem(NOVA_RECENTLY_VIEWED_KEY) || '[]');
+  list = list.filter(x => x !== id);
+  list.unshift(id);
+  list = list.slice(0, NOVA_RECENTLY_VIEWED_MAX);
+  localStorage.setItem(NOVA_RECENTLY_VIEWED_KEY, JSON.stringify(list));
+}
+
+function novaRenderRecentlyViewed(rowId, sectionId, excludeId){
+  const rowEl = document.getElementById(rowId);
+  const sectionEl = document.getElementById(sectionId);
+  if(!rowEl || !sectionEl) return;
+  const list = JSON.parse(localStorage.getItem(NOVA_RECENTLY_VIEWED_KEY) || '[]').filter(id => id !== excludeId);
+  const products = list.map(id => (typeof novaGetProduct === 'function') && novaGetProduct(id)).filter(Boolean).slice(0, 6);
+  if(products.length === 0){ sectionEl.style.display = 'none'; return; }
+  sectionEl.style.display = 'block';
+  rowEl.innerHTML = products.map(novaProductCardHTML).join('');
+}
+</script>
+<script>
+const NOVA_COMPARE_KEY = 'nova_compare';
+const NOVA_COMPARE_MAX = 3;
+
+function novaGetCompareList(){
+  try{ return JSON.parse(localStorage.getItem(NOVA_COMPARE_KEY)) || []; }
+  catch(e){ return []; }
+}
+function novaSaveCompareList(list){
+  localStorage.setItem(NOVA_COMPARE_KEY, JSON.stringify(list));
+  novaRenderCompareBar();
+}
+function novaIsComparing(id){
+  return novaGetCompareList().includes(id);
+}
+
+function novaHandleCompareClick(e, id){
+  e.preventDefault(); e.stopPropagation();
+  let list = novaGetCompareList();
+  if(list.includes(id)){
+    list = list.filter(x => x !== id);
+  } else {
+    if(list.length >= NOVA_COMPARE_MAX){
+      novaToast(`You can compare up to ${NOVA_COMPARE_MAX} products at a time`);
+      return;
+    }
+    list.push(id);
+  }
+  novaSaveCompareList(list);
+  
+  document.querySelectorAll(`[data-compare-id="${id}"]`).forEach(btn => {
+    btn.classList.toggle('active', list.includes(id));
+  });
+  novaToast(list.includes(id) ? 'Added to comparison' : 'Removed from comparison');
+}
+
+function novaCompareInjectDOM(){
+  if(document.getElementById('compare-bar')) return;
+
+  const bar = document.createElement('div');
+  bar.id = 'compare-bar';
+  bar.innerHTML = `
+    <div class="compare-bar-inner">
+      <div class="compare-bar-items" id="compare-bar-items"></div>
+      <div class="compare-bar-actions">
+        <span class="compare-bar-hint" id="compare-bar-hint"></span>
+        <button class="btn btn-outline-dark btn-sm" onclick="novaClearCompare()">Clear</button>
+        <button class="btn btn-gradient btn-sm" id="compare-open-btn" onclick="novaOpenCompareModal()">Compare</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(bar);
+
+  const overlay = document.createElement('div');
+  overlay.id = 'compare-modal-overlay';
+  overlay.onclick = (e) => { if(e.target === overlay) novaCloseCompareModal(); };
+  overlay.innerHTML = `
+    <div id="compare-modal">
+      <div class="compare-modal-head">
+        <h3>Compare Products</h3>
+        <button class="compare-close" onclick="novaCloseCompareModal()" aria-label="Close">✕</button>
+      </div>
+      <div class="compare-table-wrap" id="compare-table-wrap"></div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+function novaClearCompare(){
+  novaSaveCompareList([]);
+  document.querySelectorAll('.pc-compare.active').forEach(btn => btn.classList.remove('active'));
+  novaToast('Comparison cleared');
+}
+
+function novaRemoveFromCompare(id){
+  const list = novaGetCompareList().filter(x => x !== id);
+  novaSaveCompareList(list);
+  document.querySelectorAll(`[data-compare-id="${id}"]`).forEach(btn => btn.classList.remove('active'));
+  if(list.length === 0){ novaCloseCompareModal(); }
+  else { novaRenderCompareModal(); }
+}
+
+function novaRenderCompareBar(){
+  const list = novaGetCompareList();
+  const bar = document.getElementById('compare-bar');
+  if(!bar) return;
+  const visible = list.length > 0;
+  bar.classList.toggle('show', visible);
+  document.body.classList.toggle('nova-compare-open', visible);
+  if(!visible) return;
+
+  const products = list.map(id => novaGetProduct(id)).filter(Boolean);
+  document.getElementById('compare-bar-items').innerHTML = products.map(p => `
+    <div class="compare-chip">
+      <div class="thumb" style="${p.image ? `background-image:url('${p.image}')` : `background:linear-gradient(${p.art.gradient})`}"></div>
+      <span>${p.name}</span>
+      <button onclick="novaRemoveFromCompare('${p.id}')" aria-label="Remove">✕</button>
+    </div>
+  `).join('');
+  document.getElementById('compare-bar-hint').textContent = `${list.length}/${NOVA_COMPARE_MAX} selected`;
+  document.getElementById('compare-open-btn').disabled = list.length < 2;
+}
+
+function novaOpenCompareModal(){
+  if(novaGetCompareList().length < 2){
+    novaToast('Add at least 2 products to compare');
+    return;
+  }
+  novaRenderCompareModal();
+  document.getElementById('compare-modal-overlay').classList.add('show');
+}
+function novaCloseCompareModal(){
+  document.getElementById('compare-modal-overlay').classList.remove('show');
+}
+
+function novaRenderCompareModal(){
+  const products = novaGetCompareList().map(id => novaGetProduct(id)).filter(Boolean);
+  if(products.length === 0){ novaCloseCompareModal(); return; }
+
+  const specKeys = [];
+  products.forEach(p => Object.keys(p.specs).forEach(k => { if(!specKeys.includes(k)) specKeys.push(k); }));
+
+  const headCells = products.map(p => `
+    <th class="compare-col-head">
+      ${p.image ? `<img src="${p.image}" alt="${p.name}">` : `<div class="p-art" style="background:linear-gradient(${p.art.gradient});display:flex;align-items:center;justify-content:center;"><span class="icon" style="font-size:1.6rem;">${p.art.icon}</span></div>`}
+      <div class="name">${p.name}</div>
+      <div class="price">${novaFormatPrice(p.price)}</div>
+      <a href="product.html?id=${p.id}" class="btn btn-outline-dark btn-sm" style="margin-bottom:8px;display:block;">View</a>
+      <button class="remove-col" onclick="novaRemoveFromCompare('${p.id}')">Remove</button>
+    </th>
+  `).join('');
+
+  const ratingRow = `<tr><td>Rating</td>${products.map(p => `<td>${novaStarString(p.rating)} ${p.rating} (${p.reviewCount})</td>`).join('')}</tr>`;
+  const categoryRow = `<tr><td>Category</td>${products.map(p => `<td>${novaCategoryLabel(p.category)}</td>`).join('')}</tr>`;
+  const specRows = specKeys.map(key => `
+    <tr><td>${key}</td>${products.map(p => `<td>${p.specs[key] || '—'}</td>`).join('')}</tr>
+  `).join('');
+
+  document.getElementById('compare-table-wrap').innerHTML = `
+    <table class="compare-grid-table">
+      <tr><th></th>${headCells}</tr>
+      ${categoryRow}
+      ${ratingRow}
+      ${specRows}
+    </table>
+  `;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  novaCompareInjectDOM();
+  novaRenderCompareBar();
+});
+</script>
+<script>
+function novaToggleMobileMenu(){
+  const menu = document.getElementById('nova-mobile-menu');
+  const overlay = document.getElementById('nova-mobile-overlay');
+  const btn = document.getElementById('nova-burger');
+  const open = menu.classList.toggle('open');
+  overlay.classList.toggle('open', open);
+  btn.setAttribute('aria-expanded', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+function novaCloseMobileMenu(){
+  const menu = document.getElementById('nova-mobile-menu');
+  const overlay = document.getElementById('nova-mobile-overlay');
+  const btn = document.getElementById('nova-burger');
+  menu.classList.remove('open');
+  overlay.classList.remove('open');
+  btn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+
+function novaHandleSearch(e, inputId){
+  e.preventDefault();
+  const q = document.getElementById(inputId).value.trim();
+  window.location.href = 'shop.html' + (q ? ('?q=' + encodeURIComponent(q)) : '');
+}
+
+function novaInitSearchAutocomplete(inputId){
+  const input = document.getElementById(inputId);
+  if(!input || typeof NOVA_PRODUCTS === 'undefined') return;
+
+  const dropdown = document.createElement('div');
+  dropdown.className = 'search-autocomplete';
+  input.closest('form').style.position = 'relative';
+  input.closest('form').appendChild(dropdown);
+
+  function renderResults(q){
+    if(!q){ dropdown.classList.remove('open'); return; }
+    const query = q.toLowerCase();
+    const matches = NOVA_PRODUCTS.filter(p =>
+      p.name.toLowerCase().includes(query) || novaCategoryLabel(p.category).toLowerCase().includes(query)
+    ).slice(0, 5);
+
+    if(matches.length === 0){
+      dropdown.innerHTML = `<div class="sa-empty">No matches for "${q}" — press Enter to search anyway.</div>`;
+    } else {
+      dropdown.innerHTML = matches.map(p => `
+        <a class="sa-item" href="product.html?id=${p.id}">
+          <div class="sa-thumb">${p.image ? `<img src="${p.image}" alt="">` : p.art.icon}</div>
+          <div>
+            <div class="sa-name">${p.name}</div>
+            <div class="sa-price">${novaFormatPrice(p.price)}</div>
+          </div>
+        </a>
+      `).join('') + `<a class="sa-viewall" href="shop.html?q=${encodeURIComponent(q)}">See all results for "${q}" →</a>`;
+    }
+    dropdown.classList.add('open');
+  }
+
+  let debounceTimer;
+  input.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => renderResults(input.value.trim()), 150);
+  });
+  input.addEventListener('focus', () => { if(input.value.trim()) renderResults(input.value.trim()); });
+  document.addEventListener('click', (e) => {
+    if(!dropdown.contains(e.target) && e.target !== input) dropdown.classList.remove('open');
+  });
+  input.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') dropdown.classList.remove('open');
+  });
+}
+
+function novaInitScrollReveal(){
+  const els = document.querySelectorAll('[data-reveal]');
+  if(!('IntersectionObserver' in window)){
+    els.forEach(el => el.classList.add('revealed'));
+    return;
+  }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('revealed');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(el => io.observe(el));
+}
+
+function novaInitNavScroll(){
+  const header = document.getElementById('nova-header');
+  if(!header) return;
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 8);
+  window.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+}
+
+function novaInitMobileTabbar(){
+  if(document.getElementById('mobile-tabbar')) return;
+  const page = window.location.pathname.split('/').pop() || 'index.html';
+  const tabs = [
+    { href:'index.html', icon:'🏠', label:'Home', match:['index.html',''] },
+    { href:'shop.html', icon:'🛒', label:'Shop', match:['shop.html'] },
+    { href:'cart.html', icon:'🛍', label:'Cart', match:['cart.html'], badge:'data-cart-count' },
+    { href:'account.html', icon:'👤', label:'Account', match:['account.html'] },
+  ];
+  const bar = document.createElement('div');
+  bar.id = 'mobile-tabbar';
+  bar.innerHTML = tabs.map(t => `
+    <a href="${t.href}" class="tab-item ${t.match.includes(page) ? 'active' : ''}">
+      <span class="tab-icon">${t.icon}</span>
+      <span>${t.label}</span>
+      ${t.badge ? `<span class="tab-badge" ${t.badge}>0</span>` : ''}
+    </a>
+  `).join('');
+  document.body.appendChild(bar);
+  if(typeof novaSyncBadges === 'function') novaSyncBadges();
+}
+
+function novaInitEscapeHandler(){
+  document.addEventListener('keydown', (e) => {
+    if(e.key !== 'Escape') return;
+    const mobileMenu = document.getElementById('nova-mobile-menu');
+    if(mobileMenu && mobileMenu.classList.contains('open')){ novaCloseMobileMenu(); return; }
+    const compareModal = document.getElementById('compare-modal-overlay');
+    if(compareModal && compareModal.classList.contains('show')){ novaCloseCompareModal(); return; }
+    const assistantPanel = document.getElementById('nova-assistant-panel');
+    if(assistantPanel && assistantPanel.classList.contains('open')){ novaAssistantToggle(); return; }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  novaInitScrollReveal();
+  novaInitNavScroll();
+  novaInitSearchAutocomplete('nav-search-input');
+  novaInitSearchAutocomplete('mobile-search-input');
+  novaInitMobileTabbar();
+  novaInitEscapeHandler();
+});
+</script>
+<script>
+function novaRevealPage(){
+  document.body.classList.add('nova-loaded');
+}
+
+function novaInitScrollProgress(){
+  if(document.getElementById('nova-scroll-progress')) return;
+  const bar = document.createElement('div');
+  bar.id = 'nova-scroll-progress';
+  document.body.appendChild(bar);
+  const update = () => {
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const height = h.scrollHeight - h.clientHeight;
+    bar.style.width = height > 0 ? (scrolled / height * 100) + '%' : '0%';
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
+
+function novaInitButtonRipple(){
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn');
+    if(!btn) return;
+    const rect = btn.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    const size = Math.max(rect.width, rect.height);
+    ripple.className = 'btn-ripple';
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+    ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+    btn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 650);
+  });
+}
+
+function novaInitCardTilt(){
+  const MAX_TILT = 6; 
+  let activeCard = null;
+
+  document.addEventListener('mousemove', (e) => {
+    const card = e.target.closest('.product-card, .cat-card');
+    if(!card){
+      if(activeCard){ novaResetTilt(activeCard); activeCard = null; }
+      return;
+    }
+    if(window.matchMedia('(pointer: coarse)').matches) return; 
+    activeCard = card;
+    const rect = card.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;  
+    const py = (e.clientY - rect.top) / rect.height;
+    const ry = (px - 0.5) * MAX_TILT * 2;
+    const rx = (0.5 - py) * MAX_TILT * 2;
+    card.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+    card.style.setProperty('--ry', ry.toFixed(2) + 'deg');
+    card.style.setProperty('--tz', '6px');
+  });
+  document.addEventListener('mouseleave', (e) => {
+    const card = e.target.closest && e.target.closest('.product-card, .cat-card');
+    if(card) novaResetTilt(card);
+  }, true);
+}
+function novaResetTilt(card){
+  card.style.setProperty('--rx', '0deg');
+  card.style.setProperty('--ry', '0deg');
+  card.style.setProperty('--tz', '0px');
+}
+
+function novaInitHeroSpotlight(){
+  const hero = document.querySelector('.hero');
+  if(!hero || window.matchMedia('(pointer: coarse)').matches) return;
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    const mx = ((e.clientX - rect.left) / rect.width * 100).toFixed(1) + '%';
+    const my = ((e.clientY - rect.top) / rect.height * 100).toFixed(1) + '%';
+    hero.style.setProperty('--mx', mx);
+    hero.style.setProperty('--my', my);
+  });
+}
+
+function novaInitBadgePop(){
+  const lastValues = new WeakMap();
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach(m => {
+      const el = m.target.nodeType === 1 ? m.target : m.target.parentElement;
+      if(!el || !el.classList || !el.classList.contains('badge-count')) return;
+      const prev = lastValues.get(el);
+      const curr = el.textContent;
+      if(prev !== undefined && prev !== curr){
+        el.classList.remove('pop');
+        void el.offsetWidth; 
+        el.classList.add('pop');
+      }
+      lastValues.set(el, curr);
+    });
+  });
+  document.querySelectorAll('.badge-count').forEach(el => {
+    lastValues.set(el, el.textContent);
+    observer.observe(el, { childList: true, characterData: true, subtree: true });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  novaInitScrollProgress();
+  novaInitButtonRipple();
+  novaInitCardTilt();
+  novaInitHeroSpotlight();
+  novaInitBadgePop();
+
+  requestAnimationFrame(novaRevealPage);
+});
+
+setTimeout(novaRevealPage, 800);
+</script>
+<script>
+const NOVA_PROMO_CODES = {
+  'NOVA10': { pct: 10, label: 'NOVA10 applied — 10% off' },
+  'NOVA20': { pct: 20, label: 'NOVA20 applied — 20% off' },
+  'WELCOME': { pct: 5,  label: 'WELCOME applied — 5% off' },
+};
+
+let novaCurrentStep = 1;
+let novaAppliedPromo = null; 
+
+function novaGetSelectedShipping(){
+  const el = document.querySelector('input[name="shipping"]:checked');
+  return el ? el.value : 'standard';
+}
+function novaComputeTotals(){
+  const subtotal = novaCartSubtotal();
+  const discount = novaAppliedPromo ? Math.round(subtotal * novaAppliedPromo.pct / 100) : 0;
+  const afterDiscount = subtotal - discount;
+  const method = novaGetSelectedShipping();
+  let shipping;
+  if(afterDiscount === 0){
+    shipping = 0;
+  } else if(method === 'express'){
+    shipping = 350;
+  } else {
+    shipping = afterDiscount >= NOVA_FREE_SHIPPING_THRESHOLD ? 0 : NOVA_SHIPPING_FLAT;
+  }
+  return { subtotal, discount, shipping, method, total: afterDiscount + shipping };
+}
+function novaEstimatedDeliveryText(method){
+  const days = method === 'express' ? 2 : 5;
+  const start = method === 'express' ? 1 : 3;
+  const fmt = (d) => new Date(Date.now() + d*86400000).toLocaleDateString(undefined,{month:'short', day:'numeric'});
+  return `${fmt(start)} – ${fmt(days)}`;
+}
+
+function novaRenderCheckoutSummary(){
+  const lines = novaCartLines();
+  if(lines.length === 0){
+    document.getElementById('checkout-form').style.display = 'none';
+    document.getElementById('checkout-empty').style.display = 'block';
+    return;
+  }
+  document.getElementById('checkout-items').innerHTML = lines.map(l => `
+    <div style="display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:6px 0;color:var(--muted-dark);">
+      <span>${l.product.name} × ${l.qty}</span>
+      <span style="color:#fff;">${novaFormatPrice(l.lineTotal)}</span>
+    </div>
+  `).join('');
+
+  const t = novaComputeTotals();
+  document.getElementById('co-subtotal').textContent = novaFormatPrice(t.subtotal);
+  document.getElementById('co-shipping').textContent = t.shipping === 0 ? 'Free' : novaFormatPrice(t.shipping);
+  document.getElementById('co-total').textContent = novaFormatPrice(t.total);
+
+  const discountRow = document.getElementById('co-discount-row');
+  if(t.discount > 0){
+    discountRow.style.display = 'flex';
+    document.getElementById('co-discount').textContent = '−' + novaFormatPrice(t.discount);
+  } else {
+    discountRow.style.display = 'none';
+  }
+}
+
+function novaApplyPromo(){
+  const input = document.getElementById('f-promo');
+  const code = input.value.trim().toUpperCase();
+  const match = NOVA_PROMO_CODES[code];
+  if(!match){
+    novaToast(code ? 'That promo code isn\'t valid' : 'Enter a promo code first');
+    return;
+  }
+  novaAppliedPromo = { code, pct: match.pct };
+  document.getElementById('promo-applied-text').textContent = match.label;
+  document.getElementById('promo-applied').classList.add('show');
+  input.value = '';
+  input.disabled = true;
+  novaRenderCheckoutSummary();
+  novaToast('Promo code applied');
+}
+function novaRemovePromo(){
+  novaAppliedPromo = null;
+  document.getElementById('promo-applied').classList.remove('show');
+  document.getElementById('f-promo').disabled = false;
+  novaRenderCheckoutSummary();
+}
+
+function novaValidateField(input, testFn){
+  const wrap = input.closest('.form-field');
+  const error = wrap.querySelector('.field-error');
+  const valid = testFn(input.value.trim());
+  input.classList.toggle('invalid', !valid);
+  if(error) error.classList.toggle('show', !valid);
+  return valid;
+}
+
+function novaValidateStep1(){
+  const nameOk = novaValidateField(document.getElementById('f-name'), v => v.length >= 2);
+  const emailOk = novaValidateField(document.getElementById('f-email'), v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+  const phoneOk = novaValidateField(document.getElementById('f-phone'), v => /^[\d\s+()-]{7,}$/.test(v));
+  const addressOk = novaValidateField(document.getElementById('f-address'), v => v.length >= 5);
+  const cityOk = novaValidateField(document.getElementById('f-city'), v => v.length >= 2);
+  const provinceOk = novaValidateField(document.getElementById('f-province'), v => v.length >= 2);
+  const postalOk = novaValidateField(document.getElementById('f-postal'), v => /^[\w\s-]{3,10}$/.test(v));
+  return nameOk && emailOk && phoneOk && addressOk && cityOk && provinceOk && postalOk;
+}
+
+function novaGetSelectedPayment(){
+  return document.querySelector('input[name="payment"]:checked').value;
+}
+
+function novaLuhnCheck(numStr){
+  const digits = numStr.replace(/\D/g,'');
+  if(digits.length < 13 || digits.length > 19) return false;
+  let sum = 0, alt = false;
+  for(let i = digits.length - 1; i >= 0; i--){
+    let d = parseInt(digits[i], 10);
+    if(alt){ d *= 2; if(d > 9) d -= 9; }
+    sum += d;
+    alt = !alt;
+  }
+  return sum % 10 === 0;
+}
+function novaDetectCardType(numStr){
+  const digits = numStr.replace(/\D/g,'');
+  if(/^4/.test(digits)) return 'Visa';
+  if(/^(5[1-5]|2[2-7])/.test(digits)) return 'Mastercard';
+  if(/^3[47]/.test(digits)) return 'Amex';
+  if(/^6(011|5)/.test(digits)) return 'Discover';
+  return digits.length >= 4 ? 'Card' : '';
+}
+
+function novaValidateStep2(){
+  const method = novaGetSelectedPayment();
+  if(method === 'gcash' || method === 'maya'){
+    const numOk = novaValidateField(document.getElementById('f-ewallet-number'), v => /^[\d\s+()-]{7,}$/.test(v));
+    const checkbox = document.getElementById('qr-confirm-checkbox');
+    const confirmed = checkbox.checked;
+    document.getElementById('qr-confirm-error').classList.toggle('show', !confirmed);
+    if(!confirmed) novaToast('Please confirm the payment to continue');
+    return numOk && confirmed;
+  }
+  if(method === 'card'){
+    const numOk = novaValidateField(document.getElementById('f-card-number'), v => novaLuhnCheck(v));
+    const expOk = novaValidateField(document.getElementById('f-card-exp'), v => {
+      if(!/^(0[1-9]|1[0-2])\/\d{2}$/.test(v)) return false;
+      const [mm, yy] = v.split('/').map(Number);
+      const expDate = new Date(2000 + yy, mm);
+      return expDate > new Date();
+    });
+    const cvvOk = novaValidateField(document.getElementById('f-card-cvv'), v => /^\d{3,4}$/.test(v));
+    return numOk && expOk && cvvOk;
+  }
+  return true; 
+}
+
+function novaUpdatePaymentExtraFields(){
+  const method = novaGetSelectedPayment();
+  document.getElementById('pay-extra-ewallet').classList.toggle('show', method === 'gcash' || method === 'maya');
+  document.getElementById('pay-extra-card').classList.toggle('show', method === 'card');
+  const label = document.querySelector('#pay-extra-ewallet label[for="f-ewallet-number"]');
+  if(label) label.textContent = method === 'gcash' ? 'GCash Mobile Number' : 'Maya Mobile Number';
+  if(method === 'gcash' || method === 'maya'){
+    document.getElementById('qr-wallet-name').textContent = method === 'gcash' ? 'GCash' : 'Maya';
+    document.getElementById('qr-sim-amount').textContent = novaFormatPrice(novaComputeTotals().total);
+  }
+}
+
+function novaSetProgress(step){
+  document.querySelectorAll('.cp-step').forEach(el => {
+    const n = parseInt(el.dataset.step, 10);
+    el.classList.toggle('active', n === step);
+    el.classList.toggle('done', n < step);
+  });
+}
+function novaShowStep(step){
+  document.querySelectorAll('.checkout-step').forEach(el => {
+    el.classList.toggle('active', parseInt(el.dataset.stepPanel, 10) === step);
+  });
+  novaSetProgress(step);
+  novaCurrentStep = step;
+  window.scrollTo({ top: document.getElementById('checkout-progress').offsetTop - 100, behavior: 'smooth' });
+}
+function novaCheckoutNext(fromStep){
+  if(fromStep === 1 && !novaValidateStep1()){
+    novaToast('Please fix the highlighted fields');
+    return;
+  }
+  if(fromStep === 2 && !novaValidateStep2()){
+    novaToast('Please fix the highlighted fields');
+    return;
+  }
+  if(fromStep === 2){ novaBuildReview(); }
+  novaShowStep(fromStep + 1);
+}
+function novaCheckoutBack(fromStep){
+  novaShowStep(fromStep - 1);
+}
+
+function novaBuildReview(){
+  const name = document.getElementById('f-name').value.trim();
+  const address = document.getElementById('f-address').value.trim();
+  const city = document.getElementById('f-city').value.trim();
+  const province = document.getElementById('f-province').value.trim();
+  const postal = document.getElementById('f-postal').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const notes = document.getElementById('f-notes').value.trim();
+  document.getElementById('review-shipping').innerHTML = `${name}<br>${address}, ${city}, ${province} ${postal}<br>${phone}` + (notes ? `<br><span style="color:var(--muted-dark);">Note: ${notes}</span>` : '');
+
+  const shipMethod = novaGetSelectedShipping();
+  const shipLabel = shipMethod === 'express' ? 'Express' : 'Standard';
+  document.getElementById('review-shipping-method').textContent = `${shipLabel} · Est. delivery ${novaEstimatedDeliveryText(shipMethod)}`;
+
+  const method = novaGetSelectedPayment();
+  const labels = { cod:'Cash on Delivery', gcash:'GCash', maya:'Maya', card:'Credit/Debit Card' };
+  let paymentText = labels[method];
+  if(method === 'gcash' || method === 'maya'){
+    paymentText += ' — ' + document.getElementById('f-ewallet-number').value.trim() + ' (payment confirmed)';
+  } else if(method === 'card'){
+    const num = document.getElementById('f-card-number').value.trim();
+    paymentText += ' — ending in ' + num.replace(/\s/g,'').slice(-4);
+  }
+  document.getElementById('review-payment').textContent = paymentText;
+
+  const lines = novaCartLines();
+  document.getElementById('review-items').innerHTML = lines.map(l => `
+    <div style="display:flex;justify-content:space-between;gap:10px;font-size:13.5px;padding:6px 0;">
+      <span>${l.product.name} <span style="color:var(--muted-dark);">× ${l.qty}</span></span>
+      <span>${novaFormatPrice(l.lineTotal)}</span>
+    </div>
+  `).join('');
+}
+
+function novaLaunchConfetti(){
+  const colors = ['#5B6BFF', '#A855F7', '#22D3EE', '#F5B942', '#4ADE80'];
+  const overlay = document.getElementById('success-overlay');
+  for(let i = 0; i < 60; i++){
+    const piece = document.createElement('div');
+    piece.className = 'confetti';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+    piece.style.animationDelay = (Math.random() * 0.6) + 's';
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    overlay.appendChild(piece);
+  }
+}
+
+function novaGenerateOrderNumber(){
+  return 'NOVA-' + Math.floor(100000 + Math.random()*900000);
+}
+
+function novaPlaceOrder(){
+  const btn = document.getElementById('place-order-btn');
+  btn.disabled = true;
+  btn.textContent = 'Placing order...';
+
+  const lines = novaCartLines();
+  if(lines.length === 0){ novaToast('Your cart is empty'); btn.disabled = false; return; }
+
+  const t = novaComputeTotals();
+  const method = novaGetSelectedPayment();
+  const deliveryEstimate = novaEstimatedDeliveryText(t.method);
+  const order = {
+    orderNumber: novaGenerateOrderNumber(),
+    createdAt: new Date().toISOString(),
+    customer: {
+      name: document.getElementById('f-name').value.trim(),
+      email: document.getElementById('f-email').value.trim(),
+      phone: document.getElementById('f-phone').value.trim(),
+      address: document.getElementById('f-address').value.trim(),
+      city: document.getElementById('f-city').value.trim(),
+      province: document.getElementById('f-province').value.trim(),
+      postal: document.getElementById('f-postal').value.trim(),
+    },
+    notes: document.getElementById('f-notes').value.trim(),
+    shippingMethod: t.method,
+    deliveryEstimate,
+    payment: method,
+    promo: novaAppliedPromo ? novaAppliedPromo.code : null,
+    items: lines.map(l => ({ id: l.id, name: l.product.name, qty: l.qty, price: l.product.price })),
+    subtotal: t.subtotal, discount: t.discount, shipping: t.shipping, total: t.total,
+  };
+
+  const orders = JSON.parse(localStorage.getItem(NOVA_ORDERS_KEY) || '[]');
+  orders.push(order);
+  localStorage.setItem(NOVA_ORDERS_KEY, JSON.stringify(orders));
+  novaSaveCart([]);
+
+  setTimeout(() => {
+    document.getElementById('success-order-num').textContent = order.orderNumber;
+    document.getElementById('success-delivery-estimate').textContent = `Estimated delivery: ${deliveryEstimate}`;
+    document.getElementById('track-order-btn').href = 'track-order.html?order=' + encodeURIComponent(order.orderNumber);
+    document.getElementById('success-overlay').classList.add('show');
+    novaLaunchConfetti();
+    sessionStorage.removeItem('nova_guest_checkout');
+    setTimeout(() => {
+      window.location.href = 'track-order.html?order=' + encodeURIComponent(order.orderNumber);
+    }, 4500);
+  }, 600);
+}
+
+function novaPrefillFromAccount(){
+  const user = (typeof novaGetCurrentUser === 'function') && novaGetCurrentUser();
+  if(!user) return;
+  document.getElementById('f-name').value = user.name || '';
+  document.getElementById('f-email').value = user.email || '';
+  if(user.address){
+    document.getElementById('f-phone').value = user.address.phone || '';
+    document.getElementById('f-address').value = user.address.address || '';
+    document.getElementById('f-city').value = user.address.city || '';
+    document.getElementById('f-province').value = user.address.province || '';
+    document.getElementById('f-postal').value = user.address.postal || '';
+    novaToast('Welcome back — your saved address has been filled in');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const isGuest = sessionStorage.getItem('nova_guest_checkout') === '1';
+  if(typeof novaGetCurrentUser === 'function' && !novaGetCurrentUser() && !isGuest){
+    window.location.href = 'account.html?redirect=checkout';
+    return;
+  }
+  novaRenderCheckoutSummary();
+  novaPrefillFromAccount();
+
+  document.querySelectorAll('#pay-options .pay-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('#pay-options .pay-option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      opt.querySelector('input').checked = true;
+      novaUpdatePaymentExtraFields();
+    });
+  });
+
+  document.querySelectorAll('#shipping-options .pay-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('#shipping-options .pay-option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      opt.querySelector('input').checked = true;
+      novaRenderCheckoutSummary();
+    });
+  });
+
+  const cardNum = document.getElementById('f-card-number');
+  if(cardNum){
+    cardNum.addEventListener('input', () => {
+      let v = cardNum.value.replace(/\D/g,'').slice(0,16);
+      cardNum.value = v.replace(/(.{4})/g,'$1 ').trim();
+      const type = novaDetectCardType(cardNum.value);
+      document.getElementById('card-type-label').textContent = type ? `· ${type}` : '';
+      cardNum.classList.toggle('card-valid', novaLuhnCheck(cardNum.value));
+    });
+  }
+  const cardExp = document.getElementById('f-card-exp');
+  if(cardExp){
+    cardExp.addEventListener('input', () => {
+      let v = cardExp.value.replace(/\D/g,'').slice(0,4);
+      if(v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+      cardExp.value = v;
+    });
+  }
+
+  document.querySelectorAll('#checkout-form input').forEach(inp => {
+    inp.addEventListener('input', () => {
+      inp.classList.remove('invalid');
+      const err = inp.closest('.form-field')?.querySelector('.field-error');
+      if(err) err.classList.remove('show');
+    });
+  });
+
+  document.getElementById('f-promo')?.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){ e.preventDefault(); novaApplyPromo(); }
+  });
+});
+</script>
+<script>
+const NOVA_ASSISTANT_SUGGESTIONS = [
+  'Best earbuds under ₱5,000',
+  'Gaming gear under ₱3,000',
+  'Gift ideas under ₱2,000',
+  'Show me wearables',
+];
+
+function novaAssistantInjectStyles(){
+  if(document.getElementById('nova-assistant-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'nova-assistant-styles';
+  style.textContent = `
+    #nova-assistant-fab{
+      position:fixed;bottom:24px;right:24px;z-index:350;
+      width:58px;height:58px;border-radius:50%;background:var(--gradient);
+      border:none;cursor:pointer;box-shadow:0 12px 30px -8px rgba(124,77,255,0.55);
+      display:flex;align-items:center;justify-content:center;font-size:24px;
+      transition:transform 0.25s;
+    }
+    #nova-assistant-fab:hover{transform:scale(1.06);}
+    #nova-assistant-fab .pulse-ring{
+      position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(168,85,247,0.5);
+      animation:novaAssistPulse 2.4s ease-out infinite;
+    }
+    @keyframes novaAssistPulse{
+      0%{transform:scale(0.85);opacity:0.8;} 100%{transform:scale(1.35);opacity:0;}
+    }
+    #nova-assistant-panel{
+      position:fixed;bottom:96px;right:24px;z-index:350;width:min(360px,calc(100vw - 32px));
+      max-height:min(560px,calc(100vh - 140px));background:var(--near-black);
+      border:1px solid var(--line-dark);border-radius:20px;box-shadow:0 30px 70px -20px rgba(0,0,0,0.6);
+      display:none;flex-direction:column;overflow:hidden;
+    }
+    #nova-assistant-panel.open{display:flex;animation:novaAssistIn 0.3s ease;}
+    @keyframes novaAssistIn{from{opacity:0;transform:translateY(16px) scale(0.98);} to{opacity:1;transform:translateY(0) scale(1);}}
+    .na-head{
+      background:var(--gradient);padding:16px 18px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;
+    }
+    .na-head-title{color:#fff;font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:8px;}
+    .na-head-sub{color:rgba(255,255,255,0.85);font-size:11px;margin-top:2px;}
+    .na-close{background:none;border:none;color:#fff;font-size:18px;cursor:pointer;width:30px;height:30px;flex-shrink:0;}
+    .na-body{flex:1;overflow-y:auto;padding:16px 16px 8px;display:flex;flex-direction:column;gap:12px;}
+    .na-msg{max-width:88%;font-size:13px;line-height:1.55;padding:10px 13px;border-radius:14px;}
+    .na-msg.bot{background:var(--surface-dark);color:#fff;align-self:flex-start;border-bottom-left-radius:4px;}
+    .na-msg.user{background:var(--gradient);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+    .na-results{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+    .na-result-card{
+      display:flex;gap:10px;align-items:center;background:var(--surface-dark);border:1px solid var(--line-dark);
+      border-radius:12px;padding:8px;text-decoration:none;color:#fff;transition:border-color 0.2s;
+    }
+    .na-result-card:hover{border-color:rgba(168,85,247,0.5);}
+    .na-result-thumb{width:44px;height:44px;border-radius:8px;flex-shrink:0;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden;}
+    .na-result-thumb img{width:100%;height:100%;object-fit:cover;}
+    .na-result-name{font-size:12.5px;font-weight:600;line-height:1.3;}
+    .na-result-price{font-size:12px;color:var(--muted-dark);margin-top:2px;}
+    .na-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px;flex-shrink:0;}
+    .na-chip{
+      font-size:11px;padding:7px 12px;border-radius:var(--pill);border:1px solid var(--line-dark);
+      background:transparent;color:var(--muted-dark);cursor:pointer;transition:all 0.2s;
+    }
+    .na-chip:hover{border-color:var(--accent-purple);color:#fff;}
+    .na-input-row{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line-dark);flex-shrink:0;}
+    .na-input-row input{
+      flex:1;background:rgba(255,255,255,0.06);border:1px solid var(--line-dark);border-radius:var(--pill);
+      padding:10px 14px;color:#fff;font-size:13px;
+    }
+    .na-input-row input:focus{outline:none;border-color:var(--accent-blue);}
+    .na-send{
+      width:38px;height:38px;border-radius:50%;background:var(--gradient);border:none;color:#fff;
+      cursor:pointer;flex-shrink:0;font-size:15px;display:flex;align-items:center;justify-content:center;
+    }
+    @media(max-width:680px){
+      #nova-assistant-panel{right:16px;bottom:152px;}
+      #nova-assistant-fab{right:16px;bottom:80px;}
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function novaAssistantInjectDOM(){
+  if(document.getElementById('nova-assistant-fab')) return;
+
+  const fab = document.createElement('button');
+  fab.id = 'nova-assistant-fab';
+  fab.setAttribute('aria-label', 'Ask NOVA gadget finder');
+  fab.innerHTML = '<span class="pulse-ring"></span>✦';
+  fab.onclick = novaAssistantToggle;
+
+  const panel = document.createElement('div');
+  panel.id = 'nova-assistant-panel';
+  panel.innerHTML = `
+    <div class="na-head">
+      <div>
+        <div class="na-head-title">✦ Ask NOVA</div>
+        <div class="na-head-sub">Your gadget-finding assistant</div>
+      </div>
+      <button class="na-close" onclick="novaAssistantToggle()" aria-label="Close">✕</button>
+    </div>
+    <div class="na-body" id="na-body"></div>
+    <div class="na-chips" id="na-chips"></div>
+    <form class="na-input-row" id="na-form">
+      <input type="text" id="na-input" placeholder="e.g. best earbuds under 5000" autocomplete="off">
+      <button type="submit" class="na-send" aria-label="Send">➤</button>
+    </form>
+  `;
+
+  document.body.appendChild(fab);
+  document.body.appendChild(panel);
+
+  document.getElementById('na-chips').innerHTML = NOVA_ASSISTANT_SUGGESTIONS.map(s =>
+    `<button type="button" class="na-chip" onclick="novaAssistantAsk('${s.replace(/'/g,"\\'")}')">${s}</button>`
+  ).join('');
+
+  document.getElementById('na-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = document.getElementById('na-input');
+    const val = input.value.trim();
+    if(!val) return;
+    novaAssistantAsk(val);
+    input.value = '';
+  });
+
+  novaAssistantAddMessage('bot', "Hi! I'm the NOVA gadget finder. Tell me what you're after — a category, a budget, or both — and I'll pull matches from the catalog.");
+}
+
+function novaAssistantToggle(){
+  const panel = document.getElementById('nova-assistant-panel');
+  panel.classList.toggle('open');
+}
+
+function novaAssistantAddMessage(role, text){
+  const body = document.getElementById('na-body');
+  const msg = document.createElement('div');
+  msg.className = 'na-msg ' + role;
+  msg.textContent = text;
+  body.appendChild(msg);
+  body.scrollTop = body.scrollHeight;
+  return msg;
+}
+
+function novaAssistantAddResults(products){
+  const body = document.getElementById('na-body');
+  const wrap = document.createElement('div');
+  wrap.className = 'na-results';
+  wrap.style.alignSelf = 'flex-start';
+  wrap.style.maxWidth = '92%';
+  wrap.innerHTML = products.map(p => `
+    <a class="na-result-card" href="product.html?id=${p.id}">
+      <div class="na-result-thumb">${p.image ? `<img src="${p.image}" alt="">` : p.art.icon}</div>
+      <div>
+        <div class="na-result-name">${p.name}</div>
+        <div class="na-result-price">${novaFormatPrice(p.price)}</div>
+      </div>
+    </a>
+  `).join('');
+  body.appendChild(wrap);
+  body.scrollTop = body.scrollHeight;
+}
+
+function novaAssistantParse(query){
+  const q = query.toLowerCase();
+  let budget = null;
+  const budgetMatch = q.match(/(\d[\d,]*)\s*(peso|php|₱)?/);
+  if(budgetMatch && /under|below|less than|budget|₱|php|peso/.test(q)){
+    budget = parseInt(budgetMatch[1].replace(/,/g,''), 10);
+  }
+  let category = null;
+  for(const c of NOVA_CATEGORIES){
+    if(q.includes(c.label.toLowerCase()) || q.includes(c.id)) { category = c.id; break; }
+  }
+  
+  const aliases = {
+    earbud: 'audio', headphone: 'audio', speaker: 'audio',
+    game: 'gaming', gamer: 'gaming', keyboard: 'gaming', mouse: 'gaming', controller: 'gaming',
+    laptop: 'pc', pc: 'pc', webcam: 'pc',
+    watch: 'wearables', band: 'wearables', tracker: 'wearables',
+    phone: 'mobile', iphone: 'mobile', case: 'mobile',
+    plug: 'smart-home', camera: 'smart-home', light: 'smart-home',
+    charger: 'power', 'power bank': 'power', cable: 'accessories',
+  };
+  if(!category){
+    for(const [kw, cat] of Object.entries(aliases)){
+      if(q.includes(kw)){ category = cat; break; }
+    }
+  }
+  const wantsBest = /best|top|popular|bestseller/.test(q);
+  return { budget, category, wantsBest };
+}
+
+function novaAssistantAsk(query){
+  novaAssistantAddMessage('user', query);
+  const { budget, category, wantsBest } = novaAssistantParse(query);
+
+  let list = [...NOVA_PRODUCTS];
+  if(category) list = list.filter(p => p.category === category);
+  if(budget) list = list.filter(p => p.price <= budget);
+  list.sort((a,b) => wantsBest ? (b.rating - a.rating) : (b.sold - a.sold));
+  const results = list.slice(0, 3);
+
+  setTimeout(() => {
+    if(results.length === 0){
+      novaAssistantAddMessage('bot', "I couldn't find anything matching that exactly — try a higher budget or a different category, or browse the full shop.");
+      return;
+    }
+    let intro = "Here's what I'd recommend";
+    if(category) intro += ` in ${novaCategoryLabel(category)}`;
+    if(budget) intro += ` under ${novaFormatPrice(budget)}`;
+    intro += ':';
+    novaAssistantAddMessage('bot', intro);
+    novaAssistantAddResults(results);
+  }, 350);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  novaAssistantInjectStyles();
+  novaAssistantInjectDOM();
+});
+</script>
+</body>
+</html>
